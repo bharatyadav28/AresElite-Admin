@@ -1,0 +1,22 @@
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #f2f0ff;
+}
+
+.css-m9glnp-MuiPaper-root-MuiDialog-paper {
+  background-color: #f2f0ff !important;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.hover {
+  cursor: pointer;
+}
+
+#input::-ms-reveal {
+  display: none;
+}
