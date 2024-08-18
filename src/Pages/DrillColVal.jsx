@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import {
   Box,
   Typography,
@@ -13,10 +12,22 @@ import {
   Divider,
   TextField,
   colors,
+  IconButton,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import CustomModal from "../components/Modal";
 
 function DrillColVal() {
   const [formElements, setFormElements] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
+
   return (
     <Box color="red" sx={{ margin: "2%" }}>
       {" "}
@@ -54,7 +65,7 @@ function DrillColVal() {
               // onChange={handleChangeDone}
               // value={selectedOption}
             >
-              {["sdsd", "dsdsd"]?.map((doc, i) => (
+              {["Name 1", "Name 2"]?.map((doc, i) => (
                 <MenuItem key={i} value={doc}>
                   {doc}
                 </MenuItem>
@@ -84,153 +95,112 @@ function DrillColVal() {
             Column Values
           </Typography>
 
-          <ul
-            style={{
-              display: "flex",
-              gap: "0.5rem",
-              flexWrap: "wrap",
-              listStyle: "none",
-            }}
+          <FormControl
+            fullWidth
+            variant="outlined"
+            margin="normal"
+            style={{ maxWidth: "30rem" }}
           >
-            {formElements?.map((element, index) => {
-              return (
-                <li>
-                  {/* <OutlinedInput />{" "} */}
-                  {/* <TextField
-                    style={{
-                      //   borderRadius: "0.5rem",
-                      backgroundColor: colors.grey[100],
-                      padding: "1rem",
-                    }}
-                    // onChange={(e) => setActivityName(e.target.value)}
-                    // value={activityName}
-                    label="Input"
-                    variant="standard"
-                    InputProps={{
-                      disableUnderline: true,
-                    }}
-                  /> */}
-                  <TextField
-                    id="outlined-basic"
-                    label="Input"
-                    variant="outlined"
-                  />
-                </li>
-              );
-            })}
-          </ul>
-          <Box
-            style={{
-              paddingLeft: "3rem",
-              paddingRight: "3rem",
-              marginTop: "2.5rem",
-            }}
-          >
-            <Divider
-              sx={{
-                marginBlock: "0.8rem",
-                borderWidth: "0.1rem",
-              }}
-            />
-          </Box>
+            <InputLabel>Column Values</InputLabel>
+            <Select
+              label="Column Values"
+              name="colValues"
+              // onChange={handleChangeDone}
+              // value={selectedOption}
+            >
+              {["Value 1", "Value 2"]?.map((doc, i) => (
+                <MenuItem key={i} value={doc}>
+                  {doc}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <Box
             sx={{
               display: "flex",
+              marginTop: "2rem",
               justifyContent: "center",
-              marginTop: "5%",
+              gap: "1rem",
             }}
           >
-            <Button
-              disableElevation
-              variant="contained"
-              color="primary"
-              style={{
-                paddingInline: "5%",
-                paddingBlock: "1%",
-
-                textTransform: "none",
-                fontSize: "1.1rem",
-                borderRadius: "0.5rem",
-                width: "80%",
-                maxWidth: "25rem",
+            <IconButton
+              sx={{
+                paddingLeft: 0,
+                paddingRight: "0.005 rem",
               }}
               onClick={() => {
-                const newObj = {
-                  type: "",
-                  label: "",
-                  options: [""],
-                  key: "",
-                };
-                setFormElements([...formElements, newObj]);
+                setIsDialogOpen(true);
+                setIsEdit(false);
               }}
-              // disabled={isLoading}
             >
-              Add new Value
-            </Button>
-          </Box>
-          <Box
-            sx={{
-              backgroundColor: "white",
-              display: "flex",
-              gap: "0.5rem",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: "4%",
-            }}
-          >
-            <Button
-              disableElevation
-              variant="contained"
-              color="primary"
-              // disabled={isLoading}
-              style={{
-                paddingInline: "5%",
-                paddingBlock: "1%",
-                textTransform: "none",
-                fontSize: "1.1rem",
-                width: "50%",
-                borderRadius: "0.5rem",
-                maxWidth: "15rem",
-              }}
-              // onClick={onSubmit}
-            >
-              Submit
-              {/* {isSubmiting ? (
-                      <CircularProgress size={sm ? 24 : 30} />
-                    ) : (
-                      "Submit"
-                    )} */}
-            </Button>
-            <Button
-              disableElevation
-              variant="contained"
-              color="primary"
-              // disabled={isLoading || isSubmiting}
-              style={{
-                // color: theme.palette.primary.main,
-                paddingInline: "5%",
-                paddingBlock: "1%",
-                textTransform: "none",
-                fontSize: "1.1rem",
+              <AddIcon color="secondary" size="large" />
+            </IconButton>
 
-                width: "50%",
-                borderRadius: "0.5rem",
-                maxWidth: "15rem",
+            <IconButton
+              sx={{
+                paddingLeft: 0,
+                paddingRight: "0.005 rem",
               }}
-              // onClick={getData}
+              onClick={() => {
+                setIsDialogOpen(true);
+                setIsEdit(true);
+              }}
             >
-              Cancel
-              {/* {isLoading ? (
-                      <CircularProgress size={sm ? 24 : 30} />
-                    ) : (
-                      "Cancel"
-                    )} */}
-            </Button>
+              <EditIcon color="primary" size="large" />
+            </IconButton>
           </Box>
         </Box>
       </Box>
+      <CustomModal
+        open={isDialogOpen}
+        onClose={handleDialogClose}
+        style={{
+          width: 400,
+          bgcolor: "background.paper",
+          boxShadow: 24,
+          p: 4,
+          borderRadius: "15px",
+        }}
+      >
+        <Box>
+          <TextField
+            id="outlined-basic"
+            label={isEdit ? "Edit Input" : "New Input"}
+            variant="outlined"
+            sx={{ width: "100%" }}
+          />
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              gap: "1rem",
+              marginTop: "3rem",
+            }}
+          >
+            <Button onClick={handleDialogClose}>close</Button>
+            <Button
+              onClick={() => {
+                console.log("success");
+              }}
+              autoFocus
+            >
+              {isEdit ? "Update" : "Add"}
+            </Button>
+
+            {isEdit && (
+              <Button
+                onClick={() => {
+                  console.log("success");
+                }}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
+        </Box>
+      </CustomModal>
     </Box>
   );
 }
