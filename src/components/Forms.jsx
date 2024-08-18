@@ -6,6 +6,10 @@ import {
   Divider,
   CircularProgress,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 import ActivityForm from "../components/ActivityForm";
@@ -19,6 +23,7 @@ const Forms = ({
   getData,
   formElements,
   setFormElements,
+  isDrillInput,
 }) => {
   const [isEditableIndex, setIsEditableIndex] = useState(null);
   const { sm, md, xs, lg, theme } = useResponsiveness();
@@ -44,6 +49,52 @@ const Forms = ({
           {title}
         </Typography>
 
+        {isDrillInput && (
+          <Box
+            sx={{
+              bgcolor: "white",
+              borderRadius: "1rem",
+              marginBottom: "3rem",
+            }}
+            style={{ paddingBlock: "2%" }}
+          >
+            <Typography
+              variant="h5"
+              sx={{ display: "flex" }}
+              style={{
+                marginInline: "2%",
+                marginBottom: "2%",
+                fontWeight: "500",
+              }}
+            >
+              Drill Name
+            </Typography>
+
+            <Box style={{ textAlign: "center", marginBottom: "2rem" }}>
+              <FormControl
+                fullWidth
+                variant="outlined"
+                margin="normal"
+                style={{ maxWidth: "30rem" }}
+              >
+                <InputLabel>Drill Name</InputLabel>
+                <Select
+                  label="Drill Name"
+                  name="drillName"
+                  // onChange={handleChangeDone}
+                  // value={selectedOption}
+                >
+                  {["sdsd", "dsdsd"]?.map((doc, i) => (
+                    <MenuItem key={i} value={doc}>
+                      {doc}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Box>
+        )}
+
         <Box
           sx={{ bgcolor: "white", borderRadius: "1rem" }}
           style={{ paddingBlock: "2%" }}
@@ -59,7 +110,7 @@ const Forms = ({
                 fontWeight: "500",
               }}
             >
-              Questions
+              {isDrillInput ? "Drill Inputs" : "Questions"}
             </Typography>
 
             <Box
@@ -114,6 +165,7 @@ const Forms = ({
                           setFormElements(updatedFormElements);
                           setIsEditableIndex(null);
                         }}
+                        isDrillInput={isDrillInput ? isDrillInput : false}
                       />
                       <Divider
                         sx={{ marginBlock: "0.8rem", borderWidth: "0.1rem" }}
@@ -153,7 +205,7 @@ const Forms = ({
                     }}
                     disabled={isLoading}
                   >
-                    Add New Questions
+                    {isDrillInput ? "Add new Input" : "Add new Question"}
                   </Button>
                 </Box>
                 <Box

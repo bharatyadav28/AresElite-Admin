@@ -35,6 +35,7 @@ export default function ActivityForm({
   isEditable,
   onCancel,
   onSave,
+  isDrillInput,
 }) {
   const [formData, setFormData] = useState({
     type,
@@ -68,9 +69,9 @@ export default function ActivityForm({
           <TextField
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">{`Q${
-                  index + 1
-                }`}</InputAdornment>
+                <InputAdornment position="start">{`${
+                  !isDrillInput ? "Q" : ""
+                } ${index + 1}`}</InputAdornment>
               ),
               disableUnderline: true,
             }}
@@ -86,7 +87,7 @@ export default function ActivityForm({
             onChange={(e) =>
               setFormData({ ...formData, label: e.target.value })
             }
-            placeholder="Enter Question"
+            placeholder={isDrillInput ? "Enter Input " : "Enter Question"}
           />
         </FormControl>
       </Grid>

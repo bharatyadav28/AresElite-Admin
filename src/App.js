@@ -30,6 +30,9 @@ import TransactionManagement from "./Pages/TransactionManagement";
 import TermsAndConditions from "./components/contents/TermsAndConditions";
 import PrivacyPolicy from "./components/contents/PrivacyPolicy";
 import ServiceManagement from "./Pages/ServiceManagement";
+import DrillNames from "./Pages/DrillNames";
+import DrillInputs from "./Pages/DrillInputs";
+import DrillColVal from "./Pages/DrillColVal";
 
 const theme = createTheme({
   palette: {
@@ -231,6 +234,32 @@ function App() {
               <Register>
                 <LoginForm />
               </Register>
+            }
+          />
+
+          <Route
+            path="/drill-names"
+            element={
+              <Home>
+                <DrillNames />
+              </Home>
+            }
+          />
+          <Route
+            path="/drill-inputs"
+            element={
+              <Home>
+                <DrillInputs />
+              </Home>
+            }
+          />
+
+          <Route
+            path="/drill-col-val"
+            element={
+              <Home>
+                <DrillColVal />
+              </Home>
             }
           />
         </Routes>

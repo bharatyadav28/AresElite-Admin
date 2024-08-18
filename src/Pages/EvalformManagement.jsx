@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import axiosInstance from "../utils/axiosUtil";
 import Forms from "../components/Forms";
@@ -54,11 +54,13 @@ const EvalformManagement = () => {
     } finally {
       setIsLoading(false);
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  console.log("formElements", formElements);
 
   return (
     <Forms

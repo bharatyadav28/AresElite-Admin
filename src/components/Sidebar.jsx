@@ -19,14 +19,18 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PaidIcon from "@mui/icons-material/Paid";
 import SourceIcon from "@mui/icons-material/Source";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PolicyIcon from '@mui/icons-material/Policy';
-import HandshakeIcon from '@mui/icons-material/Handshake';
-import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
+import PolicyIcon from "@mui/icons-material/Policy";
+import HandshakeIcon from "@mui/icons-material/Handshake";
+import DesignServicesIcon from "@mui/icons-material/DesignServices";
+import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import TaskIcon from "@mui/icons-material/Task";
+import SportsHockeyIcon from "@mui/icons-material/SportsHockey";
 
 import { Link } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
 import TrainingSessionManagement from "../Pages/TrainingSessionManagement";
+import DrillNames from "../Pages/DrillNames";
 
 export default function Sidebar({ open, toggleDrawer }) {
   const adminRoutes = [
@@ -83,6 +87,7 @@ export default function Sidebar({ open, toggleDrawer }) {
         },
       ],
     },
+
     {
       name: "Service Management",
       link: "/service",
@@ -92,6 +97,29 @@ export default function Sidebar({ open, toggleDrawer }) {
       name: "Training Session Management",
       link: "/training_session_management",
       icon: <MedicalInformationIcon />,
+    },
+    {
+      name: "Dynamic Drill",
+      // link: "",
+      icon: <AssignmentIcon />,
+      isExpandable: true,
+      tabs: [
+        {
+          name: "Drill Names",
+          link: "/drill-names",
+          icon: <TaskIcon />,
+        },
+        {
+          name: "Drill Input Parameters",
+          link: "/drill-inputs",
+          icon: <DriveFileRenameOutlineIcon />,
+        },
+        {
+          name: "Fix Column/Value",
+          link: "/drill-col-val",
+          icon: <SportsHockeyIcon />,
+        },
+      ],
     },
   ];
 
