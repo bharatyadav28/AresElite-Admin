@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -16,21 +16,33 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
+import Swal from "sweetalert2";
+
 import CustomModal from "../components/Modal";
+import axiosInstance from "../utils/axiosUtil";
 
-function DrillColVal() {
-  const [formElements, setFormElements] = useState([]);
-  const [isEdit, setIsEdit] = useState(false);
-
+const PageBox = ({
+  title,
+  selectedOption,
+  handleChangeOption,
+  options,
+  isColumn,
+  handleAddItem,
+  handleUpdate,
+  handleDelete,
+}) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [input, setInput] = useState("");
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
+  console.log("aaaaaaaaaaaaaaa", typeof selectedOption);
 
+  console.log("soptions", selectedOption);
   return (
-    <Box color="red" sx={{ margin: "2%" }}>
-      {" "}
+    <Box style={{ textAlign: "center", marginBottom: "2rem" }}>
       <Box
         sx={{
           bgcolor: "white",
@@ -48,108 +60,66 @@ function DrillColVal() {
             fontWeight: "500",
           }}
         >
-          Column Name
+          {title}
         </Typography>
 
-        <Box style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <FormControl
-            fullWidth
-            variant="outlined"
-            margin="normal"
-            style={{ maxWidth: "30rem" }}
+        <FormControl
+          fullWidth
+          variant="outlined"
+          margin="normal"
+          style={{ maxWidth: "30rem" }}
+        >
+          <InputLabel>{title}</InputLabel>
+          <Select
+            label={title}
+            name="colValues"
+            onChange={handleChangeOption}
+            value={selectedOption || ""} // Keep the entire object as the selected value
           >
-            <InputLabel>Column Name</InputLabel>
-            <Select
-              label="Column Name"
-              name="colName"
-              // onChange={handleChangeDone}
-              // value={selectedOption}
-            >
-              {["Name 1", "Name 2"]?.map((doc, i) => (
-                <MenuItem key={i} value={doc}>
-                  {doc}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-      </Box>
-      <Box style={{ textAlign: "center", marginBottom: "2rem" }}>
+            {options?.map((doc, i) => (
+              <MenuItem key={i} value={doc}>
+                {" "}
+                {isColumn ? doc.columnName : doc}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
         <Box
           sx={{
-            bgcolor: "white",
-            borderRadius: "1rem",
-            marginBottom: "3rem",
+            display: "flex",
+            marginTop: "2rem",
+            justifyContent: "center",
+            gap: "1rem",
           }}
-          style={{ paddingBlock: "2%" }}
         >
-          <Typography
-            variant="h5"
-            sx={{ display: "flex" }}
-            style={{
-              marginInline: "2%",
-              marginBottom: "2%",
-              fontWeight: "500",
-            }}
-          >
-            Column Values
-          </Typography>
-
-          <FormControl
-            fullWidth
-            variant="outlined"
-            margin="normal"
-            style={{ maxWidth: "30rem" }}
-          >
-            <InputLabel>Column Values</InputLabel>
-            <Select
-              label="Column Values"
-              name="colValues"
-              // onChange={handleChangeDone}
-              // value={selectedOption}
-            >
-              {["Value 1", "Value 2"]?.map((doc, i) => (
-                <MenuItem key={i} value={doc}>
-                  {doc}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <Box
+          <IconButton
             sx={{
-              display: "flex",
-              marginTop: "2rem",
-              justifyContent: "center",
-              gap: "1rem",
+              paddingLeft: 0,
+              paddingRight: "0.005 rem",
+            }}
+            onClick={() => {
+              setIsDialogOpen(true);
+              setIsEdit(false);
             }}
           >
-            <IconButton
-              sx={{
-                paddingLeft: 0,
-                paddingRight: "0.005 rem",
-              }}
-              onClick={() => {
-                setIsDialogOpen(true);
-                setIsEdit(false);
-              }}
-            >
-              <AddIcon color="secondary" size="large" />
-            </IconButton>
+            <AddIcon color="secondary" size="large" />
+          </IconButton>
 
-            <IconButton
-              sx={{
-                paddingLeft: 0,
-                paddingRight: "0.005 rem",
-              }}
-              onClick={() => {
-                setIsDialogOpen(true);
-                setIsEdit(true);
-              }}
-            >
-              <EditIcon color="primary" size="large" />
-            </IconButton>
-          </Box>
+          <IconButton
+            sx={{
+              paddingLeft: 0,
+              paddingRight: "0.005 rem",
+            }}
+            onClick={() => {
+              setIsDialogOpen(true);
+              setIsEdit(selectedOption);
+
+              setInput(isColumn ? selectedOption.columnName : selectedOption);
+            }}
+          >
+            <EditIcon color="primary" size="large" />
+          </IconButton>
         </Box>
       </Box>
       <CustomModal
@@ -166,9 +136,11 @@ function DrillColVal() {
         <Box>
           <TextField
             id="outlined-basic"
-            label={isEdit ? "Edit Input" : "New Input"}
+            label={isEdit ? `Edit ${title}` : `New ${title}`}
             variant="outlined"
             sx={{ width: "100%" }}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
 
           <div
@@ -183,6 +155,12 @@ function DrillColVal() {
             <Button
               onClick={() => {
                 console.log("success");
+                !isEdit && handleAddItem(input);
+                isColumn && isEdit && handleUpdate(isEdit, input);
+                !isColumn &&
+                  isEdit &&
+                  handleUpdate(input, "update", selectedOption);
+                handleDialogClose();
               }}
               autoFocus
             >
@@ -193,6 +171,9 @@ function DrillColVal() {
               <Button
                 onClick={() => {
                   console.log("success");
+                  isColumn && handleDelete(isEdit);
+                  !isColumn && handleDelete(selectedOption, "delete");
+                  handleDialogClose();
                 }}
               >
                 Delete
@@ -201,6 +182,225 @@ function DrillColVal() {
           </div>
         </Box>
       </CustomModal>
+    </Box>
+  );
+};
+
+function DrillColVal() {
+  const [allColumns, setAllColumns] = useState([]);
+  const [selectedcolumn, setSelectedColumn] = useState("");
+
+  const [values, setValues] = useState([]);
+  const [selectedValues, setSelectedValues] = useState("");
+
+  console.log("Values", values);
+  const token = localStorage.getItem("token");
+
+  const getColVal = async () => {
+    try {
+      let url = `/api/admin/dynamic-drills/col`;
+
+      const { data } = await axiosInstance.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAllColumns(data?.columns);
+
+      if (selectedcolumn) {
+        const vdata = data?.columns.find(
+          (item) => item._id === selectedcolumn._id
+        );
+        console.log("selcected column", selectedcolumn, vdata);
+        setSelectedValues(vdata.values);
+      }
+    } catch (error) {
+      console.log("error");
+    }
+  };
+
+  const handleColumnChange = (event) => {
+    const selectedColumn = event.target.value;
+    setSelectedColumn(selectedColumn);
+    console.log("selectedc: ", selectedColumn);
+  };
+
+  const handleAddColumn = async (value) => {
+    try {
+      let url = `/api/admin/dynamic-drills/col`;
+
+      await axiosInstance.post(
+        url,
+        { columnName: value },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Done...",
+        text: "Column added successfully",
+      });
+      await getColVal();
+    } catch (error) {
+      console.log("error");
+      Swal.fire({
+        icon: "error",
+        title: "oops...",
+        text: "Column addition failed",
+      });
+    }
+  };
+
+  const handleUpdateColumn = async (colObj, value) => {
+    try {
+      let url = `/api/admin/dynamic-drills/col/${colObj._id}`;
+
+      await axiosInstance.put(
+        url,
+        { ...colObj, columnName: value },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Done...",
+        text: "Column updated successfully",
+      });
+
+      await getColVal();
+    } catch (error) {
+      console.log("error");
+      Swal.fire({
+        icon: "error",
+        title: "oops...",
+        text: "Column updation failed",
+      });
+    }
+  };
+
+  const handleDeleteColumn = async (colObj) => {
+    try {
+      let url = `/api/admin/dynamic-drills/col/${colObj._id}`;
+
+      await axiosInstance.delete(
+        url,
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Done...",
+        text: "Column  deleted successfully",
+      });
+      await getColVal();
+    } catch (error) {
+      console.log("error");
+      Swal.fire({
+        icon: "error",
+        title: "oops...",
+        text: "Column deletion failed",
+      });
+    }
+  };
+
+  const handleUpdateValues = async (value, type, prevValue) => {
+    try {
+      let url = `/api/admin/dynamic-drills/col/${selectedcolumn._id}`;
+
+      let data = "";
+
+      if (type === "update") {
+        const updatedValues = selectedcolumn.values.map((val) => {
+          if (val === prevValue) {
+            return value;
+          }
+          return val;
+        });
+        data = { ...selectedcolumn, values: updatedValues };
+      } else if (type === "delete") {
+        const updatedValues = selectedcolumn.values.filter((val) => {
+          if (val !== value) {
+            return value;
+          }
+        });
+        data = { ...selectedcolumn, values: updatedValues };
+      } else {
+        data = { ...selectedcolumn, values: [...selectedcolumn.values, value] };
+      }
+
+      await axiosInstance.put(url, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Done...",
+        text: "Values updated successfully",
+      });
+      await getColVal();
+    } catch (error) {
+      console.log("error");
+      Swal.fire({
+        icon: "error",
+        title: "oops...",
+        text: "Values updation failed",
+      });
+    }
+  };
+
+  const handleValuesChange = (event) => {
+    console.log("ddddd", event.target.value);
+    setSelectedValues(event.target.value);
+  };
+
+  useEffect(() => {
+    getColVal();
+  }, []);
+
+  useEffect(() => {
+    setValues(selectedcolumn.values);
+  }, [selectedcolumn]);
+
+  console.log("selectedvalue", selectedValues);
+
+  return (
+    <Box color="red" sx={{ margin: "2%" }}>
+      <PageBox
+        title="Column Name"
+        selectedOption={selectedcolumn}
+        handleChangeOption={handleColumnChange}
+        options={allColumns}
+        isColumn={true}
+        handleAddItem={handleAddColumn}
+        handleUpdate={handleUpdateColumn}
+        handleDelete={handleDeleteColumn}
+      />
+      {selectedcolumn && (
+        <PageBox
+          title="Column Values"
+          selectedOption={selectedValues}
+          handleChangeOption={handleValuesChange}
+          options={values}
+          isColumn={false}
+          handleAddItem={handleUpdateValues}
+          handleUpdate={handleUpdateValues}
+          handleDelete={handleUpdateValues}
+        />
+      )}
     </Box>
   );
 }

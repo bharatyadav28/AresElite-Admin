@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import {
   Box,
@@ -27,9 +27,17 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from "@mui/material/Modal";
+import { useSelector, useDispatch } from "react-redux";
 
 import { useResponsiveness } from "../hooks/useResponsiveness";
 import CustomDialog from "../components/CustomDialog";
+import {
+  AddDynamicDrill,
+  DeleteDynamicDrill,
+  GetAllDynamicDrills,
+  UpdateDynamicDrill,
+} from "../Redux/ApiCalls";
+import axiosInstance from "../utils/axiosUtil";
 
 const DrillNameForm = ({
   isDialogOpen,
@@ -37,6 +45,8 @@ const DrillNameForm = ({
   isEdit,
   value,
   handleChangeValue,
+  dynamicDrills,
+  setIsEdit,
 }) => {
   const style = {
     position: "absolute",
@@ -49,6 +59,24 @@ const DrillNameForm = ({
     p: 4,
     borderRadius: "15px",
   };
+
+  const dispatch = useDispatch();
+  const handleUpdateOrAdd = async () => {
+    const data = dynamicDrills.find((drill) => {
+      if (drill._id === isEdit) {
+        return true;
+      }
+      return false;
+    });
+
+    isEdit
+      ? UpdateDynamicDrill(dispatch, { ...data, drillName: value }, isEdit)
+      : AddDynamicDrill(dispatch, { drillName: value });
+
+    setIsEdit(false);
+    handleDialogClose();
+  };
+
   return (
     <Modal
       open={isDialogOpen}
@@ -84,12 +112,7 @@ const DrillNameForm = ({
             }}
           >
             <Button onClick={handleDialogClose}>close</Button>
-            <Button
-              onClick={() => {
-                console.log("success");
-              }}
-              autoFocus
-            >
+            <Button onClick={handleUpdateOrAdd} autoFocus>
               {isEdit ? "Update" : "Add"}
             </Button>
           </div>
@@ -104,13 +127,23 @@ function DrillNames() {
   const [drills, setDrills] = useState([
     { name: "Virtual reality Neuro trainer" },
   ]);
+  const [filterName, setFilterName] = useState(null);
+  console.log("filterName:", filterName);
+  const { isFetching, error, errorMsg, dynamicDrills } = useSelector(
+    (state) => state.dynamicDrills
+  );
+  console.log("isFetching: ", isFetching);
+  const dispatch = useDispatch();
+
+  console.log("drills", dynamicDrills, isFetching);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [input, setInput] = useState();
+  const [input, setInput] = useState("");
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
+    setInput("");
   };
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -122,20 +155,38 @@ function DrillNames() {
     setIsDeleteDialogOpen(true);
   };
 
+  useEffect(() => {
+    GetAllDynamicDrills(dispatch);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (filterName !== null) {
+      const timeoutId = setTimeout(
+        () => GetAllDynamicDrills(dispatch, filterName),
+        200
+      );
+      return () => clearInterval(timeoutId);
+    }
+  }, [dispatch, filterName]);
+
   return (
     <>
       <Box sx={{ m: "2%" }}>
         <Typography variant="h3">Drill Names</Typography>
         <TableContainer
           elevation={0}
-          sx={{ borderRadius: "0.5rem", mt: "2rem" }}
+          sx={{
+            borderRadius: "0.5rem",
+            mt: "2rem",
+            width: "max-content",
+          }}
           component={Paper}
         >
-          {/* {isLoading && (
-      <div>
-        <LinearProgress />
-      </div>
-    )}  */}
+          {isFetching && (
+            <div>
+              <LinearProgress />
+            </div>
+          )}
 
           <div
             style={{
@@ -174,13 +225,8 @@ function DrillNames() {
                 </Typography>
                 <TextField
                   placeholder="Search by Name"
-                  //   value={filterData.searchQuery}
-                  //   onChange={(e) =>
-                  //     setFilterData({
-                  //       ...filterData,
-                  //       searchQuery: e.target.value,
-                  //     })
-                  //   }
+                  value={filterName}
+                  onChange={(e) => setFilterName(e.target.value)}
                   sx={{ width: "15rem" }}
                 />
               </Box>
@@ -190,11 +236,10 @@ function DrillNames() {
 
           <Table
             sx={{
-              minWidth: {
+              width: {
                 xs: "100vw", // 100% of viewport width on mobile screens
-                sm: "auto", // Resets minWidth for screens larger than mobile
+                sm: "50rem", // Resets minWidth for screens larger than mobile
               },
-              maxWidth: "50rem",
               position: "relative",
             }}
             size="small"
@@ -245,9 +290,9 @@ function DrillNames() {
             <TableBody>
               {
                 // !isLoading &&
-                drills.map((drill, index) => (
+                dynamicDrills.map((drill, index) => (
                   <TableRow key={index}>
-                    <TableCell>{drill?.name}</TableCell>
+                    <TableCell>{drill?.drillName}</TableCell>
                     <TableCell>
                       <Box
                         sx={{
@@ -262,15 +307,18 @@ function DrillNames() {
                           }}
                           onClick={() => {
                             setIsDialogOpen(true);
-                            setIsEdit(true);
-                            setInput(drill.name);
+                            setIsEdit(drill._id);
+                            setInput(drill.drillName);
                           }}
                         >
                           <EditIcon color="primary" />
                         </IconButton>
 
                         <IconButton
-                          onClick={handleDeleteDialogOpen}
+                          onClick={() => {
+                            handleDeleteDialogOpen();
+                            setIsEdit(drill._id);
+                          }}
                           sx={{
                             paddingLeft: "0.1rem",
                             marginRight: "0.1rem",
@@ -291,15 +339,24 @@ function DrillNames() {
               }
             </TableBody>
           </Table>
-          <Pagination
-            count={10}
-            //   page={filterData.currentPage}
-            //   onChange={(_, v) =>
-            //     setFilterData({ ...filterData, currentPage: v })
-            //   }
-            variant="outlined"
-            color="primary"
-          />
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "end",
+              marginTop: "10px",
+            }}
+          >
+            <Pagination
+              count={10}
+              //   page={filterData.currentPage}
+              //   onChange={(_, v) =>
+              //     setFilterData({ ...filterData, currentPage: v })
+              //   }
+              variant="outlined"
+              color="primary"
+            />
+          </Box>
         </TableContainer>
 
         <DrillNameForm
@@ -308,6 +365,8 @@ function DrillNames() {
           isEdit={isEdit}
           value={input}
           handleChangeValue={(e) => setInput(e.target.value)}
+          dynamicDrills={dynamicDrills}
+          setIsEdit={setIsEdit}
         />
 
         <CustomDialog
@@ -315,7 +374,10 @@ function DrillNames() {
           open={isDeleteDialogOpen}
           title="Are you sure?"
           captain="You want to delete this Drill?"
-          onAgree={() => {}}
+          onAgree={() => {
+            DeleteDynamicDrill(dispatch, isEdit, setIsEdit);
+            handleDeleteDialogClose();
+          }}
         />
       </Box>
     </>

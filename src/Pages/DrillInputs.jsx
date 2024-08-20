@@ -1,23 +1,134 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  LinearProgress,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Box,
+} from "@mui/material";
+
 import Forms from "../components/Forms";
+import { GetAllDynamicDrills, UpdateDynamicDrill } from "../Redux/ApiCalls";
 
 function DrillInputs() {
   const [formElements, setFormElements] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSubmiting, setIsSubmiting] = useState(false);
+  const [selectedDrill, setSelectedDrill] = useState("");
+
+  const { isFetching, dynamicDrills } = useSelector(
+    (state) => state.dynamicDrills
+  );
+
+  const dispatch = useDispatch();
+
+  console.log("selectedDrill", selectedDrill);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { ...selectedDrill, inputs: formElements };
+    UpdateDynamicDrill(dispatch, data, data._id);
+  };
+
+  const fetchData = useCallback(async () => {
+    GetAllDynamicDrills(dispatch);
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  useEffect(() => {
+    if (selectedDrill) {
+      const drill = dynamicDrills.find((drill) => {
+        return drill.drillName === selectedDrill.drillName;
+      });
+
+      setFormElements(drill.inputs);
+    }
+  }, [selectedDrill, dynamicDrills]);
+
   return (
     <div>
-      <Forms
-        isLoading={isLoading}
-        isSubmiting={isSubmiting}
-        formElements={formElements}
-        setFormElements={setFormElements}
-        onSubmit={() => {}}
-        title={"Drill Input Form"}
-        getData={() => {}}
-        isDrillInput={true}
-      />
+      <Box
+        color="red"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          margin: "2%",
+          marginBottom: "1%",
+        }}
+      >
+        {isFetching && <LinearProgress />}
+        <Typography
+          variant="h4"
+          sx={{ display: "flex" }}
+          style={{ marginBlock: "1.5%", fontWeight: "500" }}
+        >
+          Drill Input Form
+        </Typography>
+
+        <Box
+          sx={{
+            bgcolor: "white",
+            borderRadius: "1rem",
+            marginBottom: "3rem",
+          }}
+          style={{ paddingBlock: "2%" }}
+        >
+          <Typography
+            variant="h5"
+            sx={{ display: "flex" }}
+            style={{
+              marginInline: "2%",
+              marginBottom: "2%",
+              fontWeight: "500",
+            }}
+          >
+            Drill Name
+          </Typography>
+
+          <Box style={{ textAlign: "center", marginBottom: "2rem" }}>
+            <FormControl
+              fullWidth
+              variant="outlined"
+              margin="normal"
+              style={{ maxWidth: "30rem" }}
+            >
+              <InputLabel>Drill Name</InputLabel>
+              <Select
+                label="Drill Name"
+                name="drillName"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSelectedDrill(value);
+                }}
+                value={selectedDrill || ""}
+              >
+                {dynamicDrills?.map((drill, i) => (
+                  <MenuItem key={i} value={drill}>
+                    {drill.drillName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
+      </Box>
+      {selectedDrill && (
+        <Forms
+          isLoading={isFetching}
+          isSubmiting={isFetching}
+          formElements={formElements}
+          setFormElements={setFormElements}
+          onSubmit={handleSubmit}
+          title={"Drill Input Form"}
+          getData={fetchData}
+          isDrillInput={true}
+        />
+      )}
     </div>
   );
 }

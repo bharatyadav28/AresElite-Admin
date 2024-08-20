@@ -10,19 +10,21 @@ import ServiceSlice from "./Slices/ServiceSlice";
 import PlanSlice from "./Slices/PlansSlice";
 import UsersSlice from "./Slices/UsersSlice";
 import BookingSlice from "./Slices/BookingSlice";
+import DynamicDrillSlice from "./Slices/DynamicDrillsSlice";
 
 export default configureStore({
-    reducer: {
-        auth: AuthSlice,
-        doc: DoctorSlice,
-        athlete: AthleteSlice,
-        pres: PresSlice,
-        eval: EvalSlice,
-        clinic: ClinicSlice,
-        slot: SlotSlice,
-        service: ServiceSlice,
-        plan: PlanSlice,
-        users: UsersSlice,
-        booking: BookingSlice
-    }
-})
+  reducer: {
+    auth: AuthSlice,
+    doc: DoctorSlice,
+    athlete: AthleteSlice,
+    pres: PresSlice,
+    eval: EvalSlice,
+    clinic: ClinicSlice,
+    slot: SlotSlice,
+    service: ServiceSlice,
+    plan: PlanSlice,
+    users: UsersSlice,
+    booking: BookingSlice,
+    dynamicDrills: DynamicDrillSlice,
+  },
+});

@@ -128,6 +128,19 @@ import {
 } from "./Slices/ClinicSlice";
 
 import axiosInstance from "../utils/axiosUtil";
+import {
+  addDynamicDrillsFailure,
+  addDynamicDrillsStart,
+  addDynamicDrillsSuccess,
+  getAllDynamicDrills,
+  getAllDynamicDrillsFailure,
+  getAllDynamicDrillsSuccess,
+  updateDynamicDrillsStart,
+  updateDynamicDrillsSuccess,
+  updateDynamicDrillsFailure,
+  deleteDynamicDrillsStart,
+  deleteDynamicDrillsSuccess,
+} from "./Slices/DynamicDrillsSlice";
 let token = localStorage.getItem("token");
 
 export const GetAllDoctors = async (dispatch) => {
@@ -693,4 +706,104 @@ export const GetBookings = async (dispatch, doctor, type) => {
   } catch (error) {
     dispatch(getAllbookingFailure(error?.response?.data?.error));
   }
+};
+
+export const GetAllDynamicDrills = async (dispatch, filterName) => {
+  dispatch(getAllDynamicDrills());
+  try {
+    let url = `/api/admin/dynamic-drills`;
+    if (filterName) {
+      url += `?filterName=${filterName}`;
+    }
+    const { data } = await axiosInstance.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch(getAllDynamicDrillsSuccess(data.dynamicDrills));
+  } catch (error) {
+    dispatch(getAllDynamicDrillsFailure(error?.response?.data?.error));
+  }
+};
+
+export const AddDynamicDrill = async (dispatch, data) => {
+  dispatch(addDynamicDrillsStart());
+
+  try {
+    await axiosInstance.post(`/api/admin/dynamic-drills`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    Swal.fire({
+      icon: "success",
+      title: "Done...",
+      text: "Drill added successfully",
+    });
+    dispatch(addDynamicDrillsSuccess());
+    GetAllDynamicDrills(dispatch);
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "oops...",
+      text: "Drill Addition failed",
+    });
+    dispatch(addDynamicDrillsFailure(error?.response?.data?.error));
+  }
+};
+
+export const UpdateDynamicDrill = async (dispatch, data, isEdit) => {
+  dispatch(updateDynamicDrillsStart());
+  console.log("data", data);
+
+  try {
+    await axiosInstance.put(`/api/admin/dynamic-drills/${isEdit}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    Swal.fire({
+      icon: "success",
+      title: "Done...",
+      text: "Drill updated successfully",
+    });
+    dispatch(updateDynamicDrillsSuccess());
+    GetAllDynamicDrills(dispatch);
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "oops...",
+      text: "Drill updation failed",
+    });
+    dispatch(updateDynamicDrillsFailure(error?.response?.data?.error));
+  }
+};
+
+export const DeleteDynamicDrill = async (dispatch, id, setIsEdit) => {
+  dispatch(deleteDynamicDrillsStart());
+
+  try {
+    await axiosInstance.delete(`/api/admin/dynamic-drills/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    Swal.fire({
+      icon: "success",
+      title: "Done...",
+      text: "Drill deleted successfully",
+    });
+    dispatch(deleteDynamicDrillsSuccess());
+    GetAllDynamicDrills(dispatch);
+  } catch (error) {
+    console.log("error", error);
+    console.log(error?.response?.data?.error);
+    Swal.fire({
+      icon: "error",
+      title: "oops...",
+      text: "Drill deletion failed",
+    });
+    dispatch(updateDynamicDrillsFailure(error?.response?.data?.error));
+  }
+  setIsEdit(false);
 };

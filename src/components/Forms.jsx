@@ -29,7 +29,10 @@ const Forms = ({
   const { sm, md, xs, lg, theme } = useResponsiveness();
 
   return (
-    <Box color="red" sx={{ margin: "2%" }}>
+    <Box
+      color="red"
+      sx={{ margin: "2%", marginTop: isDrillInput ? "0" : "2%" }}
+    >
       {/* <Box sx={{ paddingY: "2.5%", bgcolor: "white", borderRadius: "1rem" }}>
         {isLoading && <LinearProgress />}
       </Box> */}
@@ -46,10 +49,10 @@ const Forms = ({
           sx={{ display: "flex" }}
           style={{ marginBlock: "1.5%", fontWeight: "500" }}
         >
-          {title}
+          {!isDrillInput && title}
         </Typography>
 
-        {isDrillInput && (
+        {/* {isDrillInput && (
           <Box
             sx={{
               bgcolor: "white",
@@ -93,7 +96,7 @@ const Forms = ({
               </FormControl>
             </Box>
           </Box>
-        )}
+        )} */}
 
         <Box
           sx={{ bgcolor: "white", borderRadius: "1rem" }}
