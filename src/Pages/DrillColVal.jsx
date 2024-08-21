@@ -13,6 +13,7 @@ import {
   TextField,
   colors,
   IconButton,
+  LinearProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -208,10 +209,13 @@ function DrillColVal() {
   const [values, setValues] = useState([]);
   const [selectedValues, setSelectedValues] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const token = localStorage.getItem("token");
 
   const getColVal = async () => {
     try {
+      setIsLoading(true);
       let url = `/api/admin/dynamic-drills/col`;
 
       const { data } = await axiosInstance.get(url, {
@@ -232,6 +236,7 @@ function DrillColVal() {
     } catch (error) {
       console.log("error");
     }
+    setIsLoading(false);
   };
 
   const handleColumnChange = (event) => {
@@ -397,6 +402,11 @@ function DrillColVal() {
 
   return (
     <Box color="red" sx={{ margin: "2%" }}>
+      {isLoading && (
+        <div>
+          <LinearProgress />
+        </div>
+      )}
       <PageBox
         title="Column Name"
         selectedOption={selectedcolumn}
