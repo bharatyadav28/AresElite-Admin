@@ -35,12 +35,20 @@ const PageBox = ({
   const [isEdit, setIsEdit] = useState(false);
   const [input, setInput] = useState("");
 
+  const getOptionLabel = (option) => {
+    return isColumn ? option.columnName : option; // If `isColumn` is true, use `columnName`, otherwise the string itself
+  };
+
+  const getOptionValue = (option) => {
+    return isColumn ? option._id : option; // If `isColumn` is true, use `_id`, otherwise the string itself
+  };
+
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
   console.log("aaaaaaaaaaaaaaa", typeof selectedOption);
 
-  console.log("soptions", selectedOption);
+  console.log("soptions", options);
   return (
     <Box style={{ textAlign: "center", marginBottom: "2rem" }}>
       <Box
@@ -72,16 +80,20 @@ const PageBox = ({
           <InputLabel>{title}</InputLabel>
           <Select
             label={title}
-            name="colValues"
+            name={isColumn ? "colNames" : "colValues"}
             onChange={handleChangeOption}
-            value={selectedOption || ""} // Keep the entire object as the selected value
+            value={getOptionValue(selectedOption) || ""} // Keep the entire object as the selected value
           >
-            {options?.map((doc, i) => (
-              <MenuItem key={i} value={doc}>
-                {" "}
-                {isColumn ? doc.columnName : doc}
-              </MenuItem>
-            ))}
+            {options?.map((doc, i) => {
+              console.log("item", doc);
+              return (
+                <MenuItem key={i} value={getOptionValue(doc) || " "}>
+                  {" "}
+                  {/* {isColumn ? doc.columnName : doc}*/}
+                  {getOptionLabel(doc)}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
 
@@ -107,9 +119,13 @@ const PageBox = ({
           </IconButton>
 
           <IconButton
+            disabled={!selectedOption}
             sx={{
               paddingLeft: 0,
               paddingRight: "0.005 rem",
+              "&.Mui-disabled": {
+                color: "rgba(128, 128, 128, 0.3)",
+              },
             }}
             onClick={() => {
               setIsDialogOpen(true);
@@ -161,6 +177,7 @@ const PageBox = ({
                   isEdit &&
                   handleUpdate(input, "update", selectedOption);
                 handleDialogClose();
+                setInput("");
               }}
               autoFocus
             >
@@ -174,6 +191,7 @@ const PageBox = ({
                   isColumn && handleDelete(isEdit);
                   !isColumn && handleDelete(selectedOption, "delete");
                   handleDialogClose();
+                  setInput("");
                 }}
               >
                 Delete
@@ -212,7 +230,8 @@ function DrillColVal() {
           (item) => item._id === selectedcolumn._id
         );
         console.log("selcected column", selectedcolumn, vdata);
-        setSelectedValues(vdata.values);
+        setSelectedColumn(vdata);
+        setValues(vdata.values);
       }
     } catch (error) {
       console.log("error");
@@ -220,9 +239,10 @@ function DrillColVal() {
   };
 
   const handleColumnChange = (event) => {
-    const selectedColumn = event.target.value;
+    const selectedColumn = allColumns.find(
+      (col) => col._id === event.target.value
+    );
     setSelectedColumn(selectedColumn);
-    console.log("selectedc: ", selectedColumn);
   };
 
   const handleAddColumn = async (value) => {
@@ -363,8 +383,8 @@ function DrillColVal() {
   };
 
   const handleValuesChange = (event) => {
-    console.log("ddddd", event.target.value);
-    setSelectedValues(event.target.value);
+    const selectedValue = event.target.value;
+    setSelectedValues(selectedValue);
   };
 
   useEffect(() => {

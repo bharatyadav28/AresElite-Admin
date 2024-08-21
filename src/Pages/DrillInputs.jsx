@@ -26,6 +26,14 @@ function DrillInputs() {
 
   console.log("selectedDrill", selectedDrill);
 
+  const getOptionLabel = (option) => {
+    return option.drillName;
+  };
+
+  const getOptionValue = (option) => {
+    return option._id;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { ...selectedDrill, inputs: formElements };
@@ -101,15 +109,18 @@ function DrillInputs() {
               <Select
                 label="Drill Name"
                 name="drillName"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setSelectedDrill(value);
+                onChange={(event) => {
+                  const value = event.target.value;
+                  const selectedDrill = dynamicDrills.find(
+                    (drill) => drill._id === value
+                  );
+                  setSelectedDrill(selectedDrill);
                 }}
-                value={selectedDrill || ""}
+                value={getOptionValue(selectedDrill) || ""}
               >
                 {dynamicDrills?.map((drill, i) => (
-                  <MenuItem key={i} value={drill}>
-                    {drill.drillName}
+                  <MenuItem key={i} value={getOptionValue(drill)}>
+                    {getOptionLabel(drill)}
                   </MenuItem>
                 ))}
               </Select>
