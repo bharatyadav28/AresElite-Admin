@@ -36,19 +36,17 @@ const PageBox = ({
   const [input, setInput] = useState("");
 
   const getOptionLabel = (option) => {
-    return isColumn ? option.columnName : option; // If `isColumn` is true, use `columnName`, otherwise the string itself
+    return isColumn ? option?.columnName : option?.value; // If `isColumn` is true, use `columnName`, otherwise the string itself
   };
 
   const getOptionValue = (option) => {
-    return isColumn ? option._id : option; // If `isColumn` is true, use `_id`, otherwise the string itself
+    return option?._id;
   };
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
-  console.log("aaaaaaaaaaaaaaa", typeof selectedOption);
 
-  console.log("soptions", options);
   return (
     <Box style={{ textAlign: "center", marginBottom: "2rem" }}>
       <Box
@@ -85,7 +83,6 @@ const PageBox = ({
             value={getOptionValue(selectedOption) || ""} // Keep the entire object as the selected value
           >
             {options?.map((doc, i) => {
-              console.log("item", doc);
               return (
                 <MenuItem key={i} value={getOptionValue(doc) || " "}>
                   {" "}
@@ -131,7 +128,9 @@ const PageBox = ({
               setIsDialogOpen(true);
               setIsEdit(selectedOption);
 
-              setInput(isColumn ? selectedOption.columnName : selectedOption);
+              setInput(
+                isColumn ? selectedOption.columnName : selectedOption.value
+              );
             }}
           >
             <EditIcon color="primary" size="large" />
@@ -170,14 +169,13 @@ const PageBox = ({
             <Button onClick={handleDialogClose}>close</Button>
             <Button
               onClick={() => {
-                console.log("success");
                 !isEdit && handleAddItem(input);
                 isColumn && isEdit && handleUpdate(isEdit, input);
                 !isColumn &&
                   isEdit &&
                   handleUpdate(input, "update", selectedOption);
-                handleDialogClose();
                 setInput("");
+                handleDialogClose();
               }}
               autoFocus
             >
@@ -187,7 +185,6 @@ const PageBox = ({
             {isEdit && (
               <Button
                 onClick={() => {
-                  console.log("success");
                   isColumn && handleDelete(isEdit);
                   !isColumn && handleDelete(selectedOption, "delete");
                   handleDialogClose();
@@ -211,7 +208,6 @@ function DrillColVal() {
   const [values, setValues] = useState([]);
   const [selectedValues, setSelectedValues] = useState("");
 
-  console.log("Values", values);
   const token = localStorage.getItem("token");
 
   const getColVal = async () => {
@@ -229,7 +225,7 @@ function DrillColVal() {
         const vdata = data?.columns.find(
           (item) => item._id === selectedcolumn._id
         );
-        console.log("selcected column", selectedcolumn, vdata);
+
         setSelectedColumn(vdata);
         setValues(vdata.values);
       }
@@ -266,7 +262,6 @@ function DrillColVal() {
       });
       await getColVal();
     } catch (error) {
-      console.log("error");
       Swal.fire({
         icon: "error",
         title: "oops...",
@@ -297,7 +292,6 @@ function DrillColVal() {
 
       await getColVal();
     } catch (error) {
-      console.log("error");
       Swal.fire({
         icon: "error",
         title: "oops...",
@@ -326,8 +320,8 @@ function DrillColVal() {
         text: "Column  deleted successfully",
       });
       await getColVal();
+      setSelectedColumn("");
     } catch (error) {
-      console.log("error");
       Swal.fire({
         icon: "error",
         title: "oops...",
@@ -344,21 +338,25 @@ function DrillColVal() {
 
       if (type === "update") {
         const updatedValues = selectedcolumn.values.map((val) => {
-          if (val === prevValue) {
-            return value;
+          if (val._id === prevValue._id) {
+            return { ...prevValue, value };
           }
           return val;
         });
         data = { ...selectedcolumn, values: updatedValues };
       } else if (type === "delete") {
         const updatedValues = selectedcolumn.values.filter((val) => {
-          if (val !== value) {
+          if (val._id !== value._id) {
             return value;
           }
         });
         data = { ...selectedcolumn, values: updatedValues };
+        setSelectedValues("");
       } else {
-        data = { ...selectedcolumn, values: [...selectedcolumn.values, value] };
+        data = {
+          ...selectedcolumn,
+          values: [...selectedcolumn.values, { value }],
+        };
       }
 
       await axiosInstance.put(url, data, {
@@ -373,7 +371,6 @@ function DrillColVal() {
       });
       await getColVal();
     } catch (error) {
-      console.log("error");
       Swal.fire({
         icon: "error",
         title: "oops...",
@@ -383,8 +380,11 @@ function DrillColVal() {
   };
 
   const handleValuesChange = (event) => {
-    const selectedValue = event.target.value;
-    setSelectedValues(selectedValue);
+    const value = selectedcolumn.values.find(
+      (val) => val._id === event.target.value
+    );
+
+    setSelectedValues(value);
   };
 
   useEffect(() => {
@@ -392,10 +392,8 @@ function DrillColVal() {
   }, []);
 
   useEffect(() => {
-    setValues(selectedcolumn.values);
+    setValues(selectedcolumn?.values);
   }, [selectedcolumn]);
-
-  console.log("selectedvalue", selectedValues);
 
   return (
     <Box color="red" sx={{ margin: "2%" }}>

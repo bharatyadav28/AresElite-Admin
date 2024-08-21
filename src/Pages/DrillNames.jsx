@@ -128,14 +128,12 @@ function DrillNames() {
     { name: "Virtual reality Neuro trainer" },
   ]);
   const [filterName, setFilterName] = useState(null);
-  console.log("filterName:", filterName);
+
   const { isFetching, error, errorMsg, dynamicDrills } = useSelector(
     (state) => state.dynamicDrills
   );
-  console.log("isFetching: ", isFetching);
-  const dispatch = useDispatch();
 
-  console.log("drills", dynamicDrills, isFetching);
+  const dispatch = useDispatch();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);

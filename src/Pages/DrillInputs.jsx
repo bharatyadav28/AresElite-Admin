@@ -24,8 +24,6 @@ function DrillInputs() {
 
   const dispatch = useDispatch();
 
-  console.log("selectedDrill", selectedDrill);
-
   const getOptionLabel = (option) => {
     return option.drillName;
   };
