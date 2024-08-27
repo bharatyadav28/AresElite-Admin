@@ -248,6 +248,7 @@ function DrillColVal() {
 
   const handleAddColumn = async (value) => {
     try {
+      setIsLoading(true);
       let url = `/api/admin/dynamic-drills/col`;
 
       await axiosInstance.post(
@@ -273,10 +274,12 @@ function DrillColVal() {
         text: "Column addition failed",
       });
     }
+    setIsLoading(false);
   };
 
   const handleUpdateColumn = async (colObj, value) => {
     try {
+      setIsLoading(true);
       let url = `/api/admin/dynamic-drills/col/${colObj._id}`;
 
       await axiosInstance.put(
@@ -303,10 +306,12 @@ function DrillColVal() {
         text: "Column updation failed",
       });
     }
+    setIsLoading(false);
   };
 
   const handleDeleteColumn = async (colObj) => {
     try {
+      setIsLoading(true);
       let url = `/api/admin/dynamic-drills/col/${colObj._id}`;
 
       await axiosInstance.delete(
@@ -333,10 +338,12 @@ function DrillColVal() {
         text: "Column deletion failed",
       });
     }
+    setIsLoading(false);
   };
 
   const handleUpdateValues = async (value, type, prevValue) => {
     try {
+      setIsLoading(true);
       let url = `/api/admin/dynamic-drills/col/${selectedcolumn._id}`;
 
       let data = "";
@@ -382,6 +389,7 @@ function DrillColVal() {
         text: "Values updation failed",
       });
     }
+    setIsLoading(false);
   };
 
   const handleValuesChange = (event) => {

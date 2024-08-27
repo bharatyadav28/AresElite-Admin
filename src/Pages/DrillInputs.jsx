@@ -56,6 +56,8 @@ function DrillInputs() {
     }
   }, [selectedDrill, dynamicDrills]);
 
+  console.log("formElements", formElements);
+
   return (
     <div>
       <Box

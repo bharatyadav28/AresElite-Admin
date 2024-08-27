@@ -143,6 +143,7 @@ const Forms = ({
                         label={el.label}
                         type={el.type}
                         options={el.options}
+                        unit={el?.unit || ""}
                         isEditable={isEditableIndex}
                         index={i}
                         onDelete={(index) => {

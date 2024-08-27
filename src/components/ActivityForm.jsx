@@ -29,6 +29,7 @@ export default function ActivityForm({
   type,
   label,
   options,
+  unit,
   onDelete,
   onEdit,
   index,
@@ -48,16 +49,33 @@ export default function ActivityForm({
     formData.type === "multipleChoice" || formData.type === "checkBox";
   const isEditableOn = isEditable !== index;
 
+  console.log("unit", unit);
+
   useEffect(() => {
-    setFormData({ type, label, options: options?.length ? options : [""] });
-  }, [type, label, options]);
+    let newFormData = {
+      type,
+      label,
+      options: options?.length ? options : [""],
+    };
+    if (isDrillInput) {
+      newFormData = { ...newFormData, unit };
+    }
+
+    // setFormData({
+    //   type,
+    //   label,
+    //   options: options?.length ? options : [""],
+    //   unit,
+    // });
+    setFormData(newFormData);
+  }, [type, label, options, unit, isDrillInput]);
 
   return (
     <Box
       style={{
         backgroundColor: "white",
         display: "grid",
-        gridTemplateColumns: "1fr 0.5fr",
+        gridTemplateColumns: isDrillInput ? "0.5fr 0.5fr 0.5fr" : "1fr 1fr",
       }}
     >
       {/* question */}
@@ -117,6 +135,36 @@ export default function ActivityForm({
           </Select>
         </FormControl>
       </Grid>
+
+      {isDrillInput && (
+        <Grid sx={{ marginLeft: "0.5rem" }}>
+          <FormControl required fullWidth>
+            <TextField
+              InputProps={{
+                // startAdornment: (
+                //   <InputAdornment position="start">{`${
+                //     !isDrillInput ? "Q" : ""
+                //   } ${index + 1}`}</InputAdornment>
+                // ),
+                disableUnderline: true,
+              }}
+              style={{
+                borderRadius: "0.5rem",
+                backgroundColor: colors.grey[100],
+                padding: "1rem",
+                marginRight: "3%",
+              }}
+              disabled={isEditableOn}
+              variant="standard"
+              value={formData.unit}
+              onChange={(e) =>
+                setFormData({ ...formData, unit: e.target.value })
+              }
+              placeholder={"Enter unit "}
+            />
+          </FormControl>
+        </Grid>
+      )}
       <Grid
         style={{
           backgroundColor: colors.grey[100],
