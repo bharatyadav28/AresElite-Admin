@@ -247,7 +247,7 @@ function DrillNames() {
               sx={{
                 position: "absolute",
                 right: 0,
-                top: "-0.5rem",
+                top: "-3.2rem",
                 marginInline: "1rem",
               }}
             >
@@ -290,7 +290,9 @@ function DrillNames() {
                 // !isLoading &&
                 dynamicDrills.map((drill, index) => (
                   <TableRow key={index}>
-                    <TableCell>{drill?.drillName}</TableCell>
+                    <TableCell style={{ maxWidth: "15rem" }}>
+                      {drill?.drillName}
+                    </TableCell>
                     <TableCell>
                       <Box
                         sx={{
