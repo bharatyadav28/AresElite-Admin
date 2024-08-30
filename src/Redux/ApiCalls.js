@@ -720,7 +720,12 @@ export const GetAllDynamicDrills = async (dispatch, filterName) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    dispatch(getAllDynamicDrillsSuccess(data.dynamicDrills));
+
+    const dynamicDrills = data.dynamicDrills.sort((a, b) =>
+      a.drillName.localeCompare(b.drillName)
+    );
+
+    dispatch(getAllDynamicDrillsSuccess(dynamicDrills));
   } catch (error) {
     dispatch(getAllDynamicDrillsFailure(error?.response?.data?.error));
   }
