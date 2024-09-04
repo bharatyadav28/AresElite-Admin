@@ -376,6 +376,7 @@ const UserManagement = () => {
                       alignItems: "center",
                       flexDirection: "row",
                       gap: "10px",
+                      position: "relative",
                     }}
                   >
                     <Typography
@@ -394,6 +395,7 @@ const UserManagement = () => {
                       <FormGroup
                         sx={{
                           position: "absolute",
+                          top: "2.5rem",
                           zIndex: "9",
                           background: "white",
                           padding: "10px",
