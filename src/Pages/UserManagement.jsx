@@ -47,7 +47,7 @@ import { GetAllUsers } from "../Redux/ApiCalls";
 import SportsMartialArtsIcon from "@mui/icons-material/SportsMartialArts";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { DeleteUser, ActivateUser, GetBookings } from "../Redux/ApiCalls";
-import { stringAvatar, debounce } from "../utils/function";
+import { stringAvatar, debounce, formatTime } from "../utils/function";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -56,6 +56,7 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import Shipment from "../components/shipment/Shipment";
 import Transactions from "../components/Transactions";
+import { formatPhoneNumber } from "../utils/function";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -129,11 +130,11 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 300,
   bgcolor: "background.paper",
   boxShadow: 24,
-  borderRadius: "50px",
-  pt: 2,
+  borderRadius: "5px",
+  pt: 3,
   px: 4,
   pb: 3,
 };
@@ -602,7 +603,7 @@ const UserManagement = () => {
                             textAlign: "center",
                           }}
                         >
-                          {user.phone}
+                          {formatPhoneNumber(user.phone)}
                         </TableCell>
                         <TableCell
                           style={{
@@ -611,7 +612,7 @@ const UserManagement = () => {
                             textAlign: "center",
                           }}
                         >
-                          {user.startTime || "-"}
+                          {formatTime(user.startTime) || "-"}
                         </TableCell>
                         <TableCell
                           style={{
@@ -620,7 +621,7 @@ const UserManagement = () => {
                             textAlign: "center",
                           }}
                         >
-                          {user.endTime || "-"}
+                          {formatTime(user.endTime) || "-"}
                         </TableCell>
                         <TableCell
                           style={{
@@ -710,7 +711,7 @@ const UserManagement = () => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Box sx={{ display: "flex", gap: "1.5rem" }}>
               <Button
                 variant="contained"
                 size="large"

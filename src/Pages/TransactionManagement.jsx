@@ -45,6 +45,8 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckIcon from "@mui/icons-material/Check";
 import axiosInstance from "../utils/axiosUtil";
 
+import { formatDateToYYYYMMDD } from "../utils/function";
+
 function Row(props) {
   const { row, token, shouldRefetch } = props;
   const [open, setOpen] = useState(false);
@@ -100,8 +102,8 @@ function Row(props) {
             ? `${row.clientId.suffix} ${row.clientId.firstName} ${row.clientId.lastName}`
             : "---"}
         </TableCell>
-        <TableCell>{row.date.split("T")[0]}</TableCell>
-        <TableCell>{row.amount || "0"}</TableCell>
+        <TableCell>{formatDateToYYYYMMDD(row.date)}</TableCell>
+        <TableCell>$ {row.amount || "0"}</TableCell>
         <TableCell>{row.plan || "---"}</TableCell>
         <TableCell>
           <Chip
@@ -172,11 +174,11 @@ function Row(props) {
                   </p>
                 </Typography>
                 <Box>
-                  <Typography sx={{ fontSize: "0.9rem", fontWeight: "bold" }}>
+                  <Typography sx={{ fontSize: "0.9rem" }}>
                     Payment Status{" "}
                     <span
                       style={{
-                        fontWeight: "normal",
+                        // fontWeight: "normal",
                         margin: 0,
                         color: isPaid
                           ? theme.palette.success.main
@@ -248,7 +250,7 @@ function Row(props) {
 export default function TransactionManagement({ user }) {
   const token = localStorage.getItem("token");
   const { theme } = useResponsiveness();
-  const {sm} = useResponsiveness()
+  const { sm } = useResponsiveness();
 
   const dispatch = useDispatch();
   const { Plans, isFetching } = useSelector((state) => state.plan);
@@ -383,7 +385,11 @@ export default function TransactionManagement({ user }) {
               </AccordionSummary> */}
             <Typography
               variant="h6"
-              sx={{ fontWeight: "bold", fontSize: "1rem" }}
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1rem",
+                marginBottom: "0.5rem",
+              }}
               color="primary"
             >
               Filter

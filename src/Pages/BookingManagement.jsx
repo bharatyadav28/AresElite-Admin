@@ -45,6 +45,8 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckIcon from "@mui/icons-material/Check";
 import axiosInstance from "../utils/axiosUtil";
 
+import { formatDateToYYYYMMDD } from "../utils/function";
+
 function Row(props) {
   const { row, token, shouldRefetch } = props;
   const [open, setOpen] = useState(false);
@@ -117,7 +119,7 @@ function Row(props) {
         <TableCell component="th" scope="row" sx={{ paddingBlock: "1.5rem" }}>
           {row.doctor_trainer}
         </TableCell>
-        <TableCell>{row.app_date.split("T")[0]}</TableCell>
+        <TableCell>{formatDateToYYYYMMDD(row.app_date)}</TableCell>
         <TableCell>{row.app_time}</TableCell>
         <TableCell>
           <Chip
@@ -191,11 +193,11 @@ function Row(props) {
                   </p>
                 </Typography>
                 <Box>
-                  <Typography sx={{ fontSize: "0.9rem", fontWeight: "bold" }}>
+                  <Typography sx={{ fontSize: "0.9rem" }}>
                     Service Status{" "}
                     <span
                       style={{
-                        fontWeight: "normal",
+                        // fontWeight: "normal",
                         margin: 0,
                         color:
                           row.service_status === "upcoming"
@@ -357,6 +359,7 @@ export default function BookingManagement({ user }) {
     2,
     "0"
   )}-${date.getDate()}`;
+  console.log("bookings: ", bookings);
 
   const [filterData, setFilterData] = useState({
     status: "all",
@@ -364,7 +367,7 @@ export default function BookingManagement({ user }) {
     from,
     to,
     currentPage: 1,
-    searchQuery:"",
+    searchQuery: "",
     count: 10,
   });
 
@@ -389,7 +392,7 @@ export default function BookingManagement({ user }) {
           end_date: filterData.to,
           page_no: filterData.currentPage,
           per_page_count: filterData.count,
-          searchQuery: filterData.searchQuery
+          searchQuery: filterData.searchQuery,
         },
       });
 
@@ -475,7 +478,11 @@ export default function BookingManagement({ user }) {
               </AccordionSummary> */}
             <Typography
               variant="h6"
-              sx={{ fontWeight: "bold", fontSize: "1rem" }}
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1rem",
+                marginBottom: "0.5rem",
+              }}
               color="primary"
             >
               Filter
@@ -485,6 +492,7 @@ export default function BookingManagement({ user }) {
                 display: "flex",
                 gap: "0.5rem",
                 justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
               <Box>
@@ -506,10 +514,10 @@ export default function BookingManagement({ user }) {
                       searchQuery: e.target.value,
                     })
                   }
-                  sx={{width:"15rem"}}
+                  sx={{ width: "15rem" }}
                 />
               </Box>
-              <Box>
+              <Box style={{ width: "8rem" }}>
                 <Typography
                   style={{
                     fontWeight: "bold",

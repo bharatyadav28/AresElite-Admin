@@ -19,6 +19,24 @@ export function formatDateToYYYYMMDD(dateString) {
   return `${day}/${month}/${year}`;
 }
 
+export function formatPhoneNumber(number) {
+  const numStr = number.toString();
+
+  if (numStr.length !== 10) {
+    return "Invalid number ";
+  }
+
+  const formattedNumber = `(${numStr.slice(0, 3)}) ${numStr.slice(
+    3,
+    6
+  )}-${numStr.slice(6)}`;
+
+  return formattedNumber;
+}
+
+// Example usage:
+console.log(formatPhoneNumber(1234567890)); // Output: (123) 456-7890
+
 export function debounce(func, delay) {
   let timeoutId;
   return function () {
@@ -30,6 +48,28 @@ export function debounce(func, delay) {
     }, delay);
   };
 }
+
+export function formatTime(time) {
+  if (!time) {
+    return "-";
+  }
+  let [timePart, period] = time?.split(" ");
+
+  if (!period) {
+    period = "AM";
+  }
+
+  let [hours, minutes] = timePart?.split(":");
+
+  hours = hours?.padStart(2, "0");
+  minutes = minutes?.padStart(2, "0");
+
+  return `${hours}:${minutes} ${period}`;
+}
+
+// Example usage:
+console.log(formatTime("10:0 AM")); // Output: 10:00 AM
+console.log(formatTime("5:0 AM")); // Output: 05:00 AM
 
 function stringToColor(string) {
   let hash = 0;

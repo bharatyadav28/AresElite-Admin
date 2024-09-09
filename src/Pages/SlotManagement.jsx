@@ -34,7 +34,7 @@ import Toolbar from "@mui/material/Toolbar";
 import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import RampRightIcon from "@mui/icons-material/RampRight";
-import { stringAvatar } from "../utils/function";
+import { formatTime, stringAvatar } from "../utils/function";
 import axiosInstance from "../utils/axiosUtil";
 import { useSelector, useDispatch } from "react-redux";
 import Swal from "sweetalert2";
@@ -331,8 +331,8 @@ export default function SlotManagement() {
                           {slot?.doctor}
                         </Typography>
                         <Typography variant="caption" color="textPrimary">
-                          {slot?.startTime} to {slot?.endTime} at{" "}
-                          {slot?.address}
+                          {formatTime(slot?.startTime)} to{" "}
+                          {formatTime(slot?.endTime)} at {slot?.address}
                         </Typography>
                       </Box>
                       <Box
@@ -340,6 +340,7 @@ export default function SlotManagement() {
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
+                          gap: "0.2rem",
                         }}
                       >
                         <IconButton
@@ -350,6 +351,7 @@ export default function SlotManagement() {
                             "&.Mui-disabled": {
                               cursor: "not-allowed",
                             },
+                            padding: 0,
                           }}
                         >
                           <DeleteIcon color="secondary" />
@@ -365,6 +367,7 @@ export default function SlotManagement() {
                             "&.Mui-disabled": {
                               cursor: "not-allowed",
                             },
+                            padding: 0,
                           }}
                         >
                           <EditIcon color="success" />

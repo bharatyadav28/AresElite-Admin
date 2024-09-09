@@ -33,7 +33,7 @@ const Dashboard = () => {
             },
             {
               count: res.data.totalAthletes,
-              title: "Atheletes",
+              title: "Athletes",
               link: "/user_management",
               icon: <GroupAddIcon sx={{ fontSize: "4rem" }} />,
             },
@@ -51,7 +51,7 @@ const Dashboard = () => {
             },
             {
               count: res.data.totalRevenue,
-              title: "Month Revenue",
+              title: "Monthly Revenue",
               link: "/transactions",
               icon: <PaidIcon sx={{ fontSize: "4rem" }} />,
             },

@@ -98,12 +98,43 @@ const AddAthleteForm = () => {
                   { label: "First Name", name: "firstName" },
                   { label: "Last Name", name: "lastName" },
                   { label: "Suffix", name: "suffix" },
-                  { label: "Email", name: "email" },
-                  { label: "City", name: "city" },
-                  { label: "Phone", name: "phone", type: "number" },
-                  { label: "State", name: "state" },
+                ].map((field) =>
+                  isEdit ? (
+                    <Grid item xs={3} key={field.name}>
+                      <TextField
+                        fullWidth
+                        label={field.label}
+                        name={field.name}
+                        value={formData[field.name]}
+                        onChange={handleChange}
+                        variant="outlined"
+                        margin="normal"
+                        type={field.type}
+                      />
+                    </Grid>
+                  ) : (
+                    <Grid item xs={3} key={field.name}>
+                      <TextField
+                        fullWidth
+                        label={field.label}
+                        name={field.name}
+                        value={field.value}
+                        onChange={handleChange}
+                        variant="outlined"
+                        margin="normal"
+                        required={field.name === "password"}
+                        type={field.type}
+                      />
+                    </Grid>
+                  )
+                )}{" "}
+                <Grid xs={3}></Grid>
+                {[
                   { label: "Address", name: "address" },
+                  { label: "City", name: "city" },
+                  { label: "State", name: "state" },
                   { label: "Zip Code", name: "zip" },
+                  { label: "Phone", name: "phone", type: "number" },
                 ].map((field) =>
                   isEdit ? (
                     <Grid item xs={3} key={field.name}>
@@ -134,8 +165,37 @@ const AddAthleteForm = () => {
                     </Grid>
                   )
                 )}
-
-                <Grid item xs={6}>
+                {[{ label: "Email", name: "email" }].map((field) =>
+                  isEdit ? (
+                    <Grid item xs={6} key={field.name}>
+                      <TextField
+                        fullWidth
+                        label={field.label}
+                        name={field.name}
+                        value={formData[field.name]}
+                        onChange={handleChange}
+                        variant="outlined"
+                        margin="normal"
+                        type={field.type}
+                      />
+                    </Grid>
+                  ) : (
+                    <Grid item xs={6} key={field.name}>
+                      <TextField
+                        fullWidth
+                        label={field.label}
+                        name={field.name}
+                        value={field.value}
+                        onChange={handleChange}
+                        variant="outlined"
+                        margin="normal"
+                        required={field.name === "password"}
+                        type={field.type}
+                      />
+                    </Grid>
+                  )
+                )}
+                <Grid item xs={3}>
                   <FormControl fullWidth variant="outlined" margin="normal">
                     <InputLabel>Gender</InputLabel>
                     <Select
@@ -151,7 +211,6 @@ const AddAthleteForm = () => {
                     </Select>
                   </FormControl>
                 </Grid>
-
                 <Grid item xs={12} sx={{ marginBottom: "1rem" }}>
                   <Grid container spacing={2}>
                     <Grid
@@ -167,7 +226,7 @@ const AddAthleteForm = () => {
                       <DatePicker
                         fullWidth
                         name="dob"
-                        label="Date of birth"
+                        label="Date of Birth"
                         onChange={handleDateChange}
                         renderInput={(params) => (
                           <TextField {...params} variant="outlined" />
@@ -201,8 +260,7 @@ const AddAthleteForm = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-
-                <Grid item xs={7} sx={{ marginBottom: "0.5rem" }}>
+                <Grid item xs={7} style={{ marginTop: "0.5rem" }}>
                   <Typography variant="subTitle" color={"error"}>
                     Password will be automatically generated combining Phone and
                     First Name
@@ -216,6 +274,7 @@ const AddAthleteForm = () => {
                 disabled={isFetching}
                 type="submit"
                 fullWidth
+                style={{ marginTop: "0.5rem" }}
               >
                 {isFetching ? (
                   <CircularProgress size={24} color="inherit" />

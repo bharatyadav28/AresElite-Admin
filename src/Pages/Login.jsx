@@ -10,10 +10,10 @@ import {
   InputLabel,
   OutlinedInput,
   InputAdornment,
-  IconButton
+  IconButton,
 } from "@mui/material";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../Redux/ApiCalls";
@@ -42,7 +42,7 @@ const LoginForm = () => {
 
   const handleSignIn = async () => {
     await Login(dispatch, formdata);
-  }
+  };
   useEffect(() => {
     if (userInfo && token) {
       navigate("/");
@@ -65,7 +65,7 @@ const LoginForm = () => {
             Login
           </Typography>
           <Typography variant="subtitle1" align="center" gutterBottom>
-            Areas Admin Panel
+            Ares Admin Panel
           </Typography>
           <Grid container spacing={2} direction="column">
             <Grid item>
@@ -81,14 +81,17 @@ const LoginForm = () => {
             </Grid>
             <Grid item xs>
               <FormControl variant="outlined" fullWidth>
-                <InputLabel label="Password"
+                <InputLabel
+                  label="Password"
                   variant="outlined"
                   fullWidth
                   htmlFor="outlined-adornment-password"
-                >Password</InputLabel>
+                >
+                  Password
+                </InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   onChange={(e) =>
                     setFormdata({ ...formdata, password: e.target.value })
                   }
@@ -107,7 +110,6 @@ const LoginForm = () => {
                   label="Password"
                 />
               </FormControl>
-
             </Grid>
             <Grid item xs>
               <Button
@@ -116,7 +118,8 @@ const LoginForm = () => {
                 color="primary"
                 disabled={isFetching}
                 onClick={handleSignIn}
-                fullWidth               >
+                fullWidth
+              >
                 {isFetching ? (
                   <CircularProgress size={24} color="inherit" />
                 ) : (
