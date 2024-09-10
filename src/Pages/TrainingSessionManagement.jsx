@@ -205,7 +205,7 @@ function Row(props) {
               {row.frequency === "per_month" ? "Per Month" : "Package"}
             </TableCell>
             <TableCell>{row.sessions}</TableCell>
-            <TableCell>{row.cost}</TableCell>
+            <TableCell>$ {row.cost.toLocaleString("en-US")}</TableCell>
           </>
         )}
         <TableCell>
@@ -369,7 +369,24 @@ const TrainingSessionManagement = () => {
   return (
     <>
       <Box sx={{ m: "2%" }}>
-        <Typography variant="h3">Training Session Management</Typography>
+        <div style={{ position: "relative" }}>
+          <Typography variant="h3">Training Session Management</Typography>
+          <Button
+            onClick={handleModalOpen}
+            style={{ marginTop: "auto" }}
+            variant="contained"
+            sx={{
+              textTransform: "none",
+              position: "absolute",
+              marginInline: "1rem",
+              right: "-1rem",
+              bottom: "-1.7rem",
+            }}
+          >
+            Add Training Session
+          </Button>
+        </div>
+
         <TableContainer
           elevation={0}
           sx={{ borderRadius: "0.5rem", mt: "2rem", position: "relative" }}
@@ -385,17 +402,10 @@ const TrainingSessionManagement = () => {
             sx={{
               position: "absolute",
               right: 0,
-              top: "0",
+              top: "-2rem",
               marginInline: "1rem",
             }}
           >
-            <Button
-              onClick={handleModalOpen}
-              variant="contained"
-              sx={{ textTransform: "none" }}
-            >
-              Add Training Session
-            </Button>
             <Modal
               open={isModalOpen}
               sx={{

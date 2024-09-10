@@ -16,11 +16,17 @@ import {
   TextField,
   Typography,
   colors,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
 } from "@mui/material";
-// import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useResponsiveness } from "../hooks/useResponsiveness";
+import { useSelector } from "react-redux";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
@@ -29,7 +35,7 @@ import CustomDialog from "../components/CustomDialog";
 
 function Row(props) {
   const { row, token, shouldRefetch } = props;
-  // const [isDeleting, setIsDeleting] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -39,33 +45,34 @@ function Row(props) {
     duration: row.duration,
   });
 
-  // const handleDelete = async (id) => {
-  //   setIsDeleting(id);
+  const handleDeleteService = async () => {
+    console.log("id", row._id);
+    setIsDeleting(row._id);
 
-  //   try {
-  //     const res = await axiosInstance.delete("/api/admin/service", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       params: {
-  //         id,
-  //       },
-  //     });
+    try {
+      const res = await axiosInstance.delete("/api/admin/service", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          id: row._id,
+        },
+      });
 
-  //     if (res.data.success) {
-  //       shouldRefetch(true);
-  //     }
-  //   } catch (err) {
-  //     console.log("... delete services error", err);
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Oops...",
-  //       text: "Failed to delete service",
-  //     });
-  //   } finally {
-  //     setIsDeleting(null);
-  //   }
-  // };
+      if (res.data.success) {
+        shouldRefetch(true);
+      }
+    } catch (err) {
+      console.log("... delete services error", err);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to delete service",
+      });
+    } finally {
+      setIsDeleting(null);
+    }
+  };
 
   const handleEdit = async () => {
     setIsUpdating(true);
@@ -101,7 +108,7 @@ function Row(props) {
     }
   };
 
-  const handleDeleteService = () => {
+  const handleDelete = () => {
     if (isOpen) {
       setIsOpen(false);
       // handleDelete(row._id);
@@ -148,9 +155,11 @@ function Row(props) {
               scope="row"
               sx={{ paddingBlock: "1.5rem" }}
             >
-              {row.name}
+              {row.name === "Sports Vision Evaluation"
+                ? "Sports Vision Performance Evaluation"
+                : row.name}
             </TableCell>
-            <TableCell>{row.cost}</TableCell>
+            <TableCell>$ {row.cost?.toLocaleString("en-US")}</TableCell>
             <TableCell>{row.duration}</TableCell>
           </>
         )}
@@ -184,13 +193,13 @@ function Row(props) {
               <EditIcon color="primary" />
             </IconButton>
           )}
-          {/* <IconButton onClick={handleDeleteService}>
+          <IconButton onClick={handleDelete}>
             {isDeleting === row._id ? (
               <CircularProgress size={20} color="secondary" />
             ) : (
               <DeleteIcon color="secondary" />
             )}
-          </IconButton> */}
+          </IconButton>
           <CustomDialog
             onClose={() => setIsOpen(false)}
             open={isOpen}
@@ -309,146 +318,178 @@ export default function ServiceManagement({ user }) {
               width: "30%",
             }}
           >
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: "bold", fontSize: "1rem" }}
-              color="primary"
-            >
-              Filter
-            </Typography>
-            <Box
-              sx={{
-                display: "flex",
-                gap: "0.5rem",
-                justifyContent: "space-between",
-              }}
-            >
-              <Box>
-                <Typography
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: "0.8rem",
-                    marginBottom: "0.3rem",
-                  }}
-                >
-                  Name
-                </Typography>
-                <TextField
-                  style={{
-                    borderRadius: "0.5rem",
-                    backgroundColor: colors.grey[100],
-                    paddingBlock: "0.4rem",
-                    paddingInline: "1rem",
-                  }}
-                  value={filterData.name}
-                  onChange={(e) =>
-                    setFilterData({ ...filterData, name: e.target.value })
-                  }
-                  disabled={isLoading}
-                  variant="standard"
-                  InputProps={{
-                    disableUnderline: true,
-                  }}
-                  placeholder="Search by service name"
-                />
-              </Box>
-            </Box>
-            {/* </Accordion> */}
-          </div>
-          <Box
-            sx={{
-              position: "absolute",
-              right: 0,
-              top: "15%",
-              marginInline: "1rem",
-            }}
-          >
-            <Modal
-              open={isModalOpen}
-              sx={{
-                position: "fixed",
-                inset: 0,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClose={handleModalClose}
-            >
+            <div>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                  marginBottom: "0.5rem",
+                }}
+                color="primary"
+              >
+                Filter
+              </Typography>
               <Box
                 sx={{
-                  padding: "1rem",
-                  bgcolor: "white",
-                  borderRadius: "0.5rem",
                   display: "flex",
-                  flexDirection: "column",
-                  gap: "1rem",
+                  gap: "0.5rem",
+                  justifyContent: "space-between",
                 }}
               >
-                <Typography>Add Service Details</Typography>
-                <TextField
-                  style={{
-                    borderRadius: "0.5rem",
-                    backgroundColor: colors.grey[100],
-                    width: "20rem",
-                  }}
-                  value={data.name}
-                  onChange={(e) => setData({ ...data, name: e.target.value })}
-                  variant="filled"
-                  InputProps={{ disableUnderline: true }}
-                  disabled={isLoading}
-                  placeholder="Service name"
-                  label="Service name"
-                />
-                <TextField
-                  style={{
-                    borderRadius: "0.5rem",
-                    backgroundColor: colors.grey[100],
-                    width: "20rem",
-                  }}
-                  value={data.cost}
-                  onChange={(e) => setData({ ...data, cost: e.target.value })}
-                  variant="filled"
-                  InputProps={{ disableUnderline: true }}
-                  disabled={isLoading}
-                  placeholder="Service cost"
-                  label="Service cost"
-                />
-                <TextField
-                  style={{
-                    borderRadius: "0.5rem",
-                    backgroundColor: colors.grey[100],
-                    width: "20rem",
-                  }}
-                  value={data.duration}
-                  onChange={(e) =>
-                    setData({ ...data, duration: e.target.value })
-                  }
-                  variant="filled"
-                  InputProps={{ disableUnderline: true }}
-                  disabled={isLoading}
-                  placeholder="Service duration"
-                  label="Service duration"
-                />
-                <Button
-                  onClick={handleAddService}
-                  disabled={isServiceAdding}
-                  sx={{ textTransform: "none" }}
-                  variant="contained"
-                >
-                  {isServiceAdding ? <CircularProgress size={30} /> : "Submit"}
-                </Button>
-                <Button
-                  sx={{ textTransform: "none" }}
-                  color="warning"
-                  onClick={() => !isServiceAdding && handleModalClose()}
-                >
-                  Cancel
-                </Button>
+                <Box>
+                  <Typography
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: "0.8rem",
+                      marginBottom: "0.3rem",
+                    }}
+                  >
+                    Name
+                  </Typography>
+                  <TextField
+                    style={{
+                      borderRadius: "0.5rem",
+                      backgroundColor: colors.grey[100],
+                      paddingBlock: "0.4rem",
+                      paddingInline: "1rem",
+                    }}
+                    value={filterData.name}
+                    onChange={(e) =>
+                      setFilterData({ ...filterData, name: e.target.value })
+                    }
+                    disabled={isLoading}
+                    variant="standard"
+                    InputProps={{
+                      disableUnderline: true,
+                    }}
+                    placeholder="Search by service name"
+                  />
+                </Box>
               </Box>
-            </Modal>
-          </Box>
+              {/* </Accordion> */}
+            </div>
+
+            <Box
+              sx={{
+                position: "absolute",
+                right: 0,
+                top: "15%",
+                marginInline: "1rem",
+              }}
+            >
+              <Modal
+                open={isModalOpen}
+                sx={{
+                  position: "fixed",
+                  inset: 0,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClose={handleModalClose}
+              >
+                <Box
+                  sx={{
+                    padding: "1rem",
+                    bgcolor: "white",
+                    borderRadius: "0.5rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem",
+                  }}
+                >
+                  <Typography>Add Service Details</Typography>
+                  <TextField
+                    style={{
+                      borderRadius: "0.5rem",
+                      backgroundColor: colors.grey[100],
+                      width: "20rem",
+                    }}
+                    value={data.name}
+                    onChange={(e) => setData({ ...data, name: e.target.value })}
+                    variant="filled"
+                    InputProps={{ disableUnderline: true }}
+                    disabled={isLoading}
+                    placeholder="Service name"
+                    label="Service name"
+                  />
+                  <TextField
+                    style={{
+                      borderRadius: "0.5rem",
+                      backgroundColor: colors.grey[100],
+                      width: "20rem",
+                    }}
+                    value={data.cost}
+                    onChange={(e) => setData({ ...data, cost: e.target.value })}
+                    variant="filled"
+                    InputProps={{ disableUnderline: true }}
+                    disabled={isLoading}
+                    placeholder="Service cost"
+                    label="Service cost"
+                  />
+                  <TextField
+                    style={{
+                      borderRadius: "0.5rem",
+                      backgroundColor: colors.grey[100],
+                      width: "20rem",
+                    }}
+                    value={data.duration}
+                    onChange={(e) =>
+                      setData({ ...data, duration: e.target.value })
+                    }
+                    variant="filled"
+                    InputProps={{ disableUnderline: true }}
+                    disabled={isLoading}
+                    placeholder="Service duration"
+                    label="Service duration"
+                  />
+                  <Button
+                    onClick={handleAddService}
+                    disabled={isServiceAdding}
+                    sx={{ textTransform: "none" }}
+                    variant="contained"
+                  >
+                    {isServiceAdding ? (
+                      <CircularProgress size={30} />
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                  <Button
+                    sx={{ textTransform: "none" }}
+                    color="warning"
+                    onClick={() => !isServiceAdding && handleModalClose()}
+                  >
+                    Cancel
+                  </Button>
+                </Box>
+              </Modal>
+            </Box>
+          </div>
+
           <Divider sx={{ width: "100%", mb: "0.5rem" }} />
-          <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <Table
+            style={{ position: "relative" }}
+            sx={{ minWidth: 650 }}
+            size="small"
+            aria-label="a dense table"
+          >
+            <div style={{ position: "absolute", top: "-3rem", right: "1rem" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  paddingY: "0.3rem",
+                }}
+                onClick={() => {
+                  // setAddService(true);
+                  setIsModalOpen(true);
+                }}
+              >
+                Add Service
+              </Button>
+            </div>
+
             <TableHead>
               <TableRow
                 sx={{ borderBottom: `2px solid ${theme.palette.primary.main}` }}
@@ -489,27 +530,27 @@ export default function ServiceManagement({ user }) {
             <TableBody>
               {!isLoading && filterData.name === ""
                 ? services.map((row) => (
-                  <Row
-                    key={row._id}
-                    row={row}
-                    token={token}
-                    shouldRefetch={setShouldRefetch}
-                  />
-                ))
-                : services
-                  .filter((service) =>
-                    service.name
-                      .toLowerCase()
-                      .includes(filterData.name.toLowerCase())
-                  )
-                  .map((row) => (
                     <Row
                       key={row._id}
                       row={row}
                       token={token}
                       shouldRefetch={setShouldRefetch}
                     />
-                  ))}
+                  ))
+                : services
+                    .filter((service) =>
+                      service.name
+                        .toLowerCase()
+                        .includes(filterData.name.toLowerCase())
+                    )
+                    .map((row) => (
+                      <Row
+                        key={row._id}
+                        row={row}
+                        token={token}
+                        shouldRefetch={setShouldRefetch}
+                      />
+                    ))}
             </TableBody>
           </Table>
         </TableContainer>

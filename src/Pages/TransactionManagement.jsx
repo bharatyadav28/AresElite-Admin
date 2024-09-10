@@ -103,7 +103,7 @@ function Row(props) {
             : "---"}
         </TableCell>
         <TableCell>{formatDateToYYYYMMDD(row.date)}</TableCell>
-        <TableCell>$ {row.amount || "0"}</TableCell>
+        <TableCell>$ {row.amount?.toLocaleString("en-US") || "0"}</TableCell>
         <TableCell>{row.plan || "---"}</TableCell>
         <TableCell>
           <Chip

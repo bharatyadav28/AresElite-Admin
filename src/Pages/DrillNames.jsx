@@ -176,7 +176,7 @@ function DrillNames() {
           sx={{
             borderRadius: "0.5rem",
             mt: "2rem",
-            width: "max-content",
+            // width: "max-content",
           }}
           component={Paper}
         >
@@ -235,8 +235,8 @@ function DrillNames() {
           <Table
             sx={{
               width: {
-                xs: "100vw", // 100% of viewport width on mobile screens
-                sm: "50rem", // Resets minWidth for screens larger than mobile
+                // xs: "100vw", // 100% of viewport width on mobile screens
+                // Resets minWidth for screens larger than mobile
               },
               position: "relative",
             }}
@@ -246,7 +246,7 @@ function DrillNames() {
             <Box
               sx={{
                 position: "absolute",
-                right: 0,
+                right: "-0.3rem",
                 top: "-3.2rem",
                 marginInline: "1rem",
               }}
@@ -290,9 +290,7 @@ function DrillNames() {
                 // !isLoading &&
                 dynamicDrills.map((drill, index) => (
                   <TableRow key={index}>
-                    <TableCell style={{ maxWidth: "15rem" }}>
-                      {drill?.drillName}
-                    </TableCell>
+                    <TableCell>{drill?.drillName}</TableCell>
                     <TableCell>
                       <Box
                         sx={{

@@ -120,7 +120,9 @@ const ContentCard = ({
               >
                 <MenuItem value="doctor">Doctor</MenuItem>
                 <MenuItem value="athleteOnline">Athlete Online</MenuItem>
-                <MenuItem value="athleteOffline">Athlete Offline</MenuItem>
+                <MenuItem value="athleteOffline">
+                  Athlete In-office Training
+                </MenuItem>
               </Select>
             </Box>
           </Box>
