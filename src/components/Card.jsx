@@ -3,11 +3,11 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { useNavigate } from "react-router-dom";
 
 const CONTAINER_COLORS = [
-  { color1: colors.cyan[700], color2: colors.cyan[800] },
-  { color1: colors.green[700], color2: colors.green[800] },
-  { color1: colors.amber[500], color2: colors.amber[600] },
-  { color1: colors.red[500], color2: colors.red[600] },
-  { color1: colors.pink[500], color2: colors.pink[600] },
+  { color1: "#9861A5", color2: " #5D3F6A" },
+  { color1: "#86608E", color2: " #5D3F6A" },
+  { color1: "#907F9F", color2: " #5D3F6A" },
+  { color1: "#645394 ", color2: " #5D3F6A" },
+  { color1: "#6F7D8C", color2: " #5D3F6A" },
 ];
 
 export default function Card({ count, title, icon, index, link }) {

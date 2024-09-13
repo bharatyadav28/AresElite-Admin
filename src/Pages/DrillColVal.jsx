@@ -66,6 +66,7 @@ const PageBox = ({
             marginBottom: "2%",
             fontWeight: "500",
           }}
+          color="primary"
         >
           {title}
         </Typography>

@@ -74,6 +74,7 @@ function DrillInputs() {
           variant="h4"
           sx={{ display: "flex" }}
           style={{ marginBlock: "1.5%", fontWeight: "500" }}
+          color={"primary"}
         >
           Drill Input Form
         </Typography>
@@ -94,6 +95,7 @@ function DrillInputs() {
               marginBottom: "2%",
               fontWeight: "500",
             }}
+            color={"primary"}
           >
             Drill Name
           </Typography>

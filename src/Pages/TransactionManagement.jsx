@@ -45,7 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckIcon from "@mui/icons-material/Check";
 import axiosInstance from "../utils/axiosUtil";
 
-import { formatDateToYYYYMMDD } from "../utils/function";
+import { formatDateToMMDDYYYY } from "../utils/function";
 
 function Row(props) {
   const { row, token, shouldRefetch } = props;
@@ -102,7 +102,7 @@ function Row(props) {
             ? `${row.clientId.suffix} ${row.clientId.firstName} ${row.clientId.lastName}`
             : "---"}
         </TableCell>
-        <TableCell>{formatDateToYYYYMMDD(row.date)}</TableCell>
+        <TableCell>{formatDateToMMDDYYYY(row.date)}</TableCell>
         <TableCell>$ {row.amount?.toLocaleString("en-US") || "0"}</TableCell>
         <TableCell>{row.plan || "---"}</TableCell>
         <TableCell>
@@ -126,9 +126,9 @@ function Row(props) {
             onClick={() => setOpen(!open)}
           >
             {open ? (
-              <VisibilityOffIcon color="warning" />
+              <VisibilityOffIcon color="primary" />
             ) : (
-              <RemoveRedEyeIcon color="warning" />
+              <RemoveRedEyeIcon color="primary" />
             )}
           </IconButton>
         </TableCell>

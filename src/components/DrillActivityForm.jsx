@@ -173,6 +173,7 @@ export default function DrillActivityForm({
           variant="h5"
           sx={{ display: "flex" }}
           style={{ marginInline: "2%", fontWeight: "500" }}
+          color='primary'
         >
           Add Activity
         </Typography>
@@ -396,6 +397,7 @@ export default function DrillActivityForm({
             fontWeight: "500",
             marginBottom: "2%",
           }}
+          color="primary"
         >
           Drill Form
         </Typography>

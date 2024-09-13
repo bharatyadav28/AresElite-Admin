@@ -13,7 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 // } from "@material-ui/core";
 import { GetAllPlans } from "../Redux/ApiCalls";
 import axiosInstance from "../utils/axiosUtil";
-import { InputAdornment, LinearProgress, colors ,
+import {
+  InputAdornment,
+  LinearProgress,
+  colors,
   Box,
   Typography,
   Grid,
@@ -23,7 +26,6 @@ import { InputAdornment, LinearProgress, colors ,
   InputLabel,
   CircularProgress,
   Button,
-
 } from "@mui/material";
 import DrillActivityForm from "../components/DrillActivityForm";
 import { useResponsiveness } from "../hooks/useResponsiveness";
@@ -336,6 +338,7 @@ const DrillsFormManagement = () => {
           variant="h4"
           sx={{ display: "flex" }}
           style={{ marginBlock: "1.5%", fontWeight: "500" }}
+          color="primary"
         >
           Drills Management
         </Typography>

@@ -669,7 +669,7 @@ const UserManagement = () => {
                               handleClickOpenView(user);
                             }}
                           >
-                            <RemoveRedEyeIcon color="warning" />
+                            <RemoveRedEyeIcon color="primary" />
                           </IconButton>
                           <IconButton
                             aria-label="delete"

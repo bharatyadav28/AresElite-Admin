@@ -48,6 +48,7 @@ const Forms = ({
           variant="h4"
           sx={{ display: "flex" }}
           style={{ marginBlock: "1.5%", fontWeight: "500" }}
+          color={"primary"}
         >
           {!isDrillInput && title}
         </Typography>
@@ -112,6 +113,7 @@ const Forms = ({
                 marginBottom: "2%",
                 fontWeight: "500",
               }}
+              color="primary"
             >
               {isDrillInput ? "Drill Inputs" : "Questions"}
             </Typography>

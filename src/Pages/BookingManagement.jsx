@@ -45,7 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckIcon from "@mui/icons-material/Check";
 import axiosInstance from "../utils/axiosUtil";
 
-import { formatDateToYYYYMMDD } from "../utils/function";
+import { formatDateToMMDDYYYY } from "../utils/function";
 
 function Row(props) {
   const { row, token, shouldRefetch } = props;
@@ -119,7 +119,7 @@ function Row(props) {
         <TableCell component="th" scope="row" sx={{ paddingBlock: "1.5rem" }}>
           {row.doctor_trainer}
         </TableCell>
-        <TableCell>{formatDateToYYYYMMDD(row.app_date)}</TableCell>
+        <TableCell>{formatDateToMMDDYYYY(row.app_date)}</TableCell>
         <TableCell>{row.app_time}</TableCell>
         <TableCell>
           <Chip
@@ -145,9 +145,9 @@ function Row(props) {
             onClick={() => setOpen(!open)}
           >
             {open ? (
-              <VisibilityOffIcon color="warning" />
+              <VisibilityOffIcon color="primary" />
             ) : (
-              <RemoveRedEyeIcon color="warning" />
+              <RemoveRedEyeIcon color="primary" />
             )}
           </IconButton>
         </TableCell>
@@ -517,12 +517,13 @@ export default function BookingManagement({ user }) {
                   sx={{ width: "15rem" }}
                 />
               </Box>
-              <Box style={{ width: "8rem" }}>
+              <Box>
                 <Typography
                   style={{
                     fontWeight: "bold",
                     fontSize: sm ? "0.6rem" : "0.8rem",
                     marginBottom: "0.3rem",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Payment Status
@@ -547,6 +548,7 @@ export default function BookingManagement({ user }) {
                     fontWeight: "bold",
                     fontSize: sm ? "0.6rem" : "0.8rem",
                     marginBottom: "0.3rem",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Appointment Status
