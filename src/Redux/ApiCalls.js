@@ -612,14 +612,20 @@ export const DeleteClinic = async (dispatch, id) => {
         id,
       },
     });
-
+    if (!data.success) {
+      throw new Error(data.error.message); // Throw the error if success is false
+    }
     dispatch(DeleteClinicSuccess(data));
+    return data;
   } catch (error) {
     Swal.fire({
       icon: "error",
       title: "oops...",
-      text: "Clinic is deletion failed",
+      text: error?.response?.data?.error?.message || "Clinic deletion failed",
     });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
     dispatch(DeleteClinicFailure(error?.response?.data?.error));
   }
 };

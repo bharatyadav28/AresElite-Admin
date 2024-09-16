@@ -6,7 +6,8 @@ const SlotSlice = createSlice({
         isFetching: false,
         error: false,
         errMsg: "",
-        slots: []
+        slots: [],
+        doctor: {}
     },
     reducers: {
         getAllSlotStart: (state, action) => {
@@ -16,6 +17,7 @@ const SlotSlice = createSlice({
         getAllSlotSuccess: (state, action) => {
             state.error = false;
             state.slots = action.payload.data;
+            state.doctor = action.payload.doctors;
             state.isFetching = false;
         },
         getAllSlotFailure: (state, action) => {

@@ -16,6 +16,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AddAthlete, updateAthlete } from "../Redux/ApiCalls";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const AddAthleteForm = () => {
   const location = useLocation();
@@ -227,6 +228,7 @@ const AddAthleteForm = () => {
                         fullWidth
                         name="dob"
                         label="Date of Birth"
+                        value={dayjs(formData.dob)}
                         onChange={handleDateChange}
                         renderInput={(params) => (
                           <TextField {...params} variant="outlined" />
