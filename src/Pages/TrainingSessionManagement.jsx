@@ -180,6 +180,7 @@ function Row(props) {
               <TextField
                 value={data.cost}
                 placeholder="Cost"
+                type="number"
                 onChange={(e) => setData({ ...data, cost: e.target.value })}
               />
             </TableCell>
@@ -187,6 +188,7 @@ function Row(props) {
               <TextField
                 value={data.sessions}
                 placeholder="Session per month"
+                type="number"
                 onChange={(e) => setData({ ...data, sessions: e.target.value })}
               />
             </TableCell>

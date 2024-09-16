@@ -20,3 +20,12 @@ a {
 #input::-ms-reveal {
   display: none;
 }
+
+.css-cveggr-MuiListItemIcon-root {
+  color: #7257FF !important;
+}
+
+.css-gepadz-MuiTypography-root,
+.css-i1hrn3-MuiTypography-root {
+  font-size: 2rem !important;
+}

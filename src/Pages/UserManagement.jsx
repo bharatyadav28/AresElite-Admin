@@ -57,6 +57,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import Shipment from "../components/shipment/Shipment";
 import Transactions from "../components/Transactions";
 import { formatPhoneNumber } from "../utils/function";
+import Forms from "../components/Forms";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -296,7 +297,7 @@ const UserManagement = () => {
           alignItems: "center",
         }}
         style={{ width: "100vw", height: "90vh", marginTop: "2rem" }}
-        // component={Paper}
+      // component={Paper}
       >
         <Grid container spacing={2} style={{ width: "95vw" }} component={Paper}>
           <Box
@@ -308,7 +309,7 @@ const UserManagement = () => {
               height: "30px",
               padding: "10px",
             }}
-            // component={Paper}
+          // component={Paper}
           >
             <Search
               component={Paper}
@@ -849,15 +850,15 @@ const UserManagement = () => {
                         {activeView?.role === "doctor"
                           ? "Dr. "
                           : activeView?.gender === "Female"
-                          ? Math.floor(
+                            ? Math.floor(
                               (new Date() - new Date(activeView?.dob)) /
-                                (1000 * 60 * 60 * 24 * 365.25)
+                              (1000 * 60 * 60 * 24 * 365.25)
                             ) < 25
-                            ? "Miss. "
-                            : "Mrs. "
-                          : "Mr. "}
+                              ? "Miss. "
+                              : "Mrs. "
+                            : "Mr. "}
                         {activeView?.firstName} {activeView?.lastName}
-                        {}
+                        { }
                       </Typography>
                     </Grid>
                   </Grid>
@@ -1023,8 +1024,8 @@ const UserManagement = () => {
                                 booking?.status === "pending"
                                   ? "warning"
                                   : booking?.status === "paid"
-                                  ? "success"
-                                  : "danger"
+                                    ? "success"
+                                    : "danger"
                               }
                               sx={{ width: "50%", textTransform: "uppercase" }}
                               label={booking?.status}
@@ -1036,10 +1037,10 @@ const UserManagement = () => {
                                 booking?.service_status === "upcoming"
                                   ? "warning"
                                   : booking?.service_status === "completed"
-                                  ? "success"
-                                  : booking?.service_status === "cancelled"
-                                  ? "error"
-                                  : "primary"
+                                    ? "success"
+                                    : booking?.service_status === "cancelled"
+                                      ? "error"
+                                      : "primary"
                               }
                               // color="primary"
                               sx={{ width: "100%", textTransform: "uppercase" }}
@@ -1067,7 +1068,7 @@ const UserManagement = () => {
               <Transactions user={activeView} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={3}>
-              Forms
+              <Forms />
             </CustomTabPanel>
             {activeView?.role === "athlete" && (
               <CustomTabPanel value={value} index={4}>
