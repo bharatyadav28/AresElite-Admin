@@ -117,6 +117,13 @@ function Row(props) {
     }
   };
 
+  const serviceName =
+    row.name === "Sports Vision Evaluation"
+      ? "Sports Vision Performance Evaluation"
+      : row.name === "Add Training Sessions"
+      ? "Training Session"
+      : row.name;
+
   return (
     <Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -127,11 +134,13 @@ function Row(props) {
               scope="row"
               sx={{ paddingBlock: "1.5rem" }}
             >
-              <TextField
+              {/* <TextField
                 value={data.name}
                 onChange={(e) => setData({ ...data, name: e.target.value })}
                 placeholder="Service name"
-              />
+                disabled={"disabled"}
+              /> */}
+              {serviceName}
             </TableCell>
             <TableCell>
               <TextField
@@ -155,9 +164,7 @@ function Row(props) {
               scope="row"
               sx={{ paddingBlock: "1.5rem" }}
             >
-              {row.name === "Sports Vision Evaluation"
-                ? "Sports Vision Performance Evaluation"
-                : row.name}
+              {serviceName}
             </TableCell>
             <TableCell>$ {row.cost?.toLocaleString("en-US")}</TableCell>
             <TableCell>{row.duration}</TableCell>
@@ -193,13 +200,13 @@ function Row(props) {
               <EditIcon color="primary" />
             </IconButton>
           )}
-          <IconButton onClick={handleDelete}>
+          {/* <IconButton onClick={handleDelete}>
             {isDeleting === row._id ? (
               <CircularProgress size={20} color="secondary" />
             ) : (
               <DeleteIcon color="secondary" />
             )}
-          </IconButton>
+          </IconButton> */}
           <CustomDialog
             onClose={() => setIsOpen(false)}
             open={isOpen}
@@ -475,7 +482,7 @@ export default function ServiceManagement({ user }) {
             size="small"
             aria-label="a dense table"
           >
-            <div style={{ position: "absolute", top: "-3rem", right: "1rem" }}>
+            {/* <div style={{ position: "absolute", top: "-3rem", right: "1rem" }}>
               <Button
                 variant="contained"
                 sx={{
@@ -488,7 +495,7 @@ export default function ServiceManagement({ user }) {
               >
                 Add Service
               </Button>
-            </div>
+            </div> */}
 
             <TableHead>
               <TableRow
