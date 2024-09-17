@@ -92,6 +92,11 @@ export default function Navbar({ open, setOpen }) {
     navigate("/");
   };
 
+  const handleProfileClick = async () => {
+    navigate("/profile")
+    handleMenuClose()
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -112,7 +117,7 @@ export default function Navbar({ open, setOpen }) {
     >
       {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
-      <MenuItem onClick={() => navigate("/profile")} color="secondary">
+      <MenuItem onClick={handleProfileClick} color="secondary">
         <AccountCircle color="secondary" /> Profile
       </MenuItem>
       <MenuItem onClick={handleLogout} color="secondary">

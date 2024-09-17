@@ -62,8 +62,9 @@ export default function SlotManagement() {
     isFetching: fetchingSlots,
     error: errorSlot,
     slots,
+    doctor
   } = useSelector((state) => state.slot);
-
+  console.log(doctor)
   const [slot, setSlot] = React.useState({});
   const [open, setOpen] = React.useState(false);
   const [selectedOption, setSelectedOption] = React.useState("");
@@ -99,9 +100,8 @@ export default function SlotManagement() {
 
   const handleTimeChange = (time, setter) => {
     const formattedTime = time
-      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${
-          time?.$H > 12 ? "PM" : "AM"
-        }`
+      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${time?.$H > 12 ? "PM" : "AM"
+      }`
       : "";
     setter(time);
     setFormData((prevData) => ({
@@ -134,9 +134,8 @@ export default function SlotManagement() {
 
   const handleTimeChangeUpdate = (time, setter) => {
     const formattedTime = time
-      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${
-          time?.$H > 12 ? "PM" : "AM"
-        }`
+      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${time?.$H > 12 ? "PM" : "AM"
+      }`
       : "";
 
     setter(time);
@@ -164,6 +163,7 @@ export default function SlotManagement() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
     setFormData({
       ...formData,
       startDate: `${date.$D}/${date.$M + 1}/${date.$y}`,
@@ -268,6 +268,7 @@ export default function SlotManagement() {
           >
             <DateCalendar
               value={date}
+              maxDate={dayjs().add(5, 'day')}
               onChange={(newValue) => {
                 setFormData({
                   ...formData,
@@ -276,7 +277,7 @@ export default function SlotManagement() {
                 });
                 setDate(newValue);
               }}
-              // disablePast={true}
+            // disablePast={true}
             />
             <Typography
               variant="subtitle2"
@@ -299,84 +300,96 @@ export default function SlotManagement() {
               {fetchingSlots ? (
                 <CircularProgress disableShrink />
               ) : (
-                slots?.map((slot, index) => (
-                  <Grid
-                    key={index}
-                    container
-                    spacing={2}
-                    sx={{
-                      width: "95%",
-                      margin: "5px",
-                      padding: "10px",
-                      background: "#F2F0FF",
-                    }}
-                    component={Paper}
-                  >
-                    <Grid xs={3}>
-                      <Avatar
-                        {...stringAvatar(`Dr. ${slot?.doctor}`)}
-                        sx={{ width: 56, height: 56 }}
-                      />
-                    </Grid>
-                    <Grid
-                      xs={9}
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Box>
-                        <Typography variant="subtitle1" color="primary">
-                          {slot?.doctor}
-                        </Typography>
-                        <Typography variant="caption" color="textPrimary">
-                          {formatTime(slot?.startTime)} to{" "}
-                          {formatTime(slot?.endTime)} at {slot?.address}
-                        </Typography>
-                      </Box>
-                      <Box
+                <>
+                  {slots?.length > 0 ? (
+                    slots.map((slot, index) => (
+                      <Grid
+                        key={index}
+                        container
+                        spacing={2}
                         sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          gap: "0.2rem",
+                          width: "95%",
+                          margin: "5px",
+                          padding: "10px",
+                          background: "#F2F0FF",
                         }}
+                        component={Paper}
                       >
-                        <IconButton
-                          aria-label="delete"
-                          onClick={() => handleSlotDelete(slot?._id)}
-                          disabled={!isTodayOrFutureDate()}
+                        <Grid style={{ display: 'flex', alignItems: 'center' }} xs={3}>
+                          {doctor.profilePic ?
+                            <img src={doctor.profilePic} style={{ width: 56, height: 56, borderRadius: '50%' }} alt="Profile" />
+                            :
+                            <Avatar
+                              {...stringAvatar(`Dr. ${slot?.doctor}`)}
+                              sx={{ width: 56, height: 56 }}
+                            />
+                          }
+                        </Grid>
+                        <Grid
+                          xs={9}
                           sx={{
-                            "&.Mui-disabled": {
-                              cursor: "not-allowed",
-                            },
-                            padding: 0,
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
                           }}
                         >
-                          <DeleteIcon color="secondary" />
-                        </IconButton>
-                        <IconButton
-                          aria-label="edit"
-                          onClick={() => {
-                            setIndex(index);
-                            handleClickOpen(slot);
-                          }}
-                          disabled={!isTodayOrFutureDate()}
-                          sx={{
-                            "&.Mui-disabled": {
-                              cursor: "not-allowed",
-                            },
-                            padding: 0,
-                          }}
-                        >
-                          <EditIcon color="success" />
-                        </IconButton>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                ))
+                          <Box>
+                            <Typography variant="subtitle1" color="primary">
+                              {slot?.doctor}
+                            </Typography>
+                            <Typography variant="caption" color="textPrimary">
+                              {formatTime(slot?.startTime)} to {formatTime(slot?.endTime)} at {slot?.address}
+                            </Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              gap: "0.2rem",
+                            }}
+                          >
+                            <IconButton
+                              aria-label="delete"
+                              onClick={() => handleSlotDelete(slot?._id)}
+                              disabled={!isTodayOrFutureDate()}
+                              sx={{
+                                "&.Mui-disabled": {
+                                  cursor: "not-allowed",
+                                },
+                                padding: 0,
+                              }}
+                            >
+                              <DeleteIcon color="secondary" />
+                            </IconButton>
+                            <IconButton
+                              aria-label="edit"
+                              onClick={() => {
+                                setIndex(index);
+                                handleClickOpen(slot);
+                              }}
+                              disabled={!isTodayOrFutureDate()}
+                              sx={{
+                                "&.Mui-disabled": {
+                                  cursor: "not-allowed",
+                                },
+                                padding: 0,
+                              }}
+                            >
+                              <EditIcon color="success" />
+                            </IconButton>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    ))
+                  ) : (
+                    <Typography variant="h6" color="textSecondary">
+                      No slots for today
+                    </Typography>
+                  )}
+                </>
               )}
+
             </Box>
           </Container>
         </Grid>
@@ -599,7 +612,9 @@ export default function SlotManagement() {
                     variant="contained"
                     size="large"
                     color="primary"
-                    disabled={isFetching}
+                    disabled={
+                      isFetching || !selectedOption || !startTime || !endTime // Disable if form is incomplete
+                    }
                     type="submit"
                     fullWidth
                   >
@@ -652,8 +667,8 @@ export default function SlotManagement() {
                 formDataUpdate.address
                   ? formDataUpdate.address
                   : selectedOption === ""
-                  ? clinics[getIndex]?.address
-                  : selectedOption
+                    ? clinics[getIndex]?.address
+                    : selectedOption
               }
             >
               {clinics?.map((clinic, i) => (

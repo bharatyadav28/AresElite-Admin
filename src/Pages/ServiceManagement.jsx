@@ -146,6 +146,7 @@ function Row(props) {
               <TextField
                 value={data.cost}
                 placeholder="Cost"
+                type="number"
                 onChange={(e) => setData({ ...data, cost: e.target.value })}
               />
             </TableCell>
@@ -153,6 +154,7 @@ function Row(props) {
               <TextField
                 value={data.duration}
                 placeholder="Duration"
+                type="number"
                 onChange={(e) => setData({ ...data, duration: e.target.value })}
               />
             </TableCell>
@@ -335,7 +337,7 @@ export default function ServiceManagement({ user }) {
                 }}
                 color="primary"
               >
-                Filter
+                Search
               </Typography>
               <Box
                 sx={{
@@ -518,7 +520,7 @@ export default function ServiceManagement({ user }) {
                     color: theme.palette.primary.main,
                   }}
                 >
-                  Cost
+                  Price
                 </TableCell>
                 <TableCell
                   sx={{
@@ -537,27 +539,28 @@ export default function ServiceManagement({ user }) {
             <TableBody>
               {!isLoading && filterData.name === ""
                 ? services.map((row) => (
+                  <Row
+                    key={row._id}
+                    row={row}
+                    token={token}
+                    shouldRefetch={setShouldRefetch}
+                  />
+                ))
+                : services
+                  .filter((service) =>
+                    service.name
+                      .toLowerCase()
+                      .includes(filterData.name.toLowerCase())
+                  )
+                  .map((row) => (
                     <Row
                       key={row._id}
                       row={row}
                       token={token}
                       shouldRefetch={setShouldRefetch}
+                      style={{ text: 'center' }}
                     />
-                  ))
-                : services
-                    .filter((service) =>
-                      service.name
-                        .toLowerCase()
-                        .includes(filterData.name.toLowerCase())
-                    )
-                    .map((row) => (
-                      <Row
-                        key={row._id}
-                        row={row}
-                        token={token}
-                        shouldRefetch={setShouldRefetch}
-                      />
-                    ))}
+                  ))}
             </TableBody>
           </Table>
         </TableContainer>

@@ -87,9 +87,8 @@ function Row(props) {
         Swal.fire({
           icon: "success",
           title: "Done...",
-          text: `Sucessfully updated ${
-            type === "status" ? "payment" : "service"
-          } status...`,
+          text: `Sucessfully updated ${type === "status" ? "payment" : "service"
+            } status...`,
         });
       }
     } catch (err) {
@@ -129,8 +128,8 @@ function Row(props) {
                 row.service_status === "upcoming"
                   ? theme.palette.primary.light
                   : row.service_status === "completed"
-                  ? theme.palette.success.light
-                  : theme.palette.warning.light,
+                    ? theme.palette.success.light
+                    : theme.palette.warning.light,
               paddingInline: "0.5rem",
               fontFamily: "monospace",
               fontWeight: "bold",
@@ -203,8 +202,8 @@ function Row(props) {
                           row.service_status === "upcoming"
                             ? theme.palette.primary.main
                             : row.service_status === "completed"
-                            ? theme.palette.success.main
-                            : theme.palette.warning.main,
+                              ? theme.palette.success.main
+                              : theme.palette.warning.main,
                       }}
                     >
                       ({row.service_status})
@@ -506,7 +505,7 @@ export default function BookingManagement({ user }) {
                   Search
                 </Typography>
                 <TextField
-                  placeholder="Search by keyword"
+                  placeholder="Search by Doctor Name"
                   value={filterData.searchQuery}
                   onChange={(e) =>
                     setFilterData({
