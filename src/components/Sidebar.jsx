@@ -37,53 +37,53 @@ export default function Sidebar({ open, toggleDrawer }) {
     {
       name: "Dashboard",
       link: "/",
-      icon: <DashboardIcon />,
+      icon: <DashboardIcon color="primary" />,
     },
     {
       name: "User Management",
       link: "/user_management",
-      icon: <SupervisedUserCircleIcon />,
+      icon: <SupervisedUserCircleIcon color="primary" />,
     },
     {
       name: "Clinics Management",
       link: "/clinics",
-      icon: <LocalHospitalIcon />,
+      icon: <LocalHospitalIcon color="primary" />,
     },
     {
       name: "Slots Management",
       link: "/slots",
-      icon: <WorkHistoryIcon />,
+      icon: <WorkHistoryIcon color="primary" />,
     },
     {
       name: "Bookings Management",
       link: "/bookings",
-      icon: <LibraryBooksIcon />,
+      icon: <LibraryBooksIcon color="primary" />,
     },
     {
       name: "Transactions Management",
       link: "/transactions",
-      icon: <PaidIcon />,
+      icon: <PaidIcon color="primary" />,
     },
     {
       name: "Plans Management",
       link: "/plans",
-      icon: <LibraryBooksIcon />,
+      icon: <LibraryBooksIcon color="primary" />,
     },
     {
       name: "Contents",
       // link: "",
-      icon: <SourceIcon />,
+      icon: <SourceIcon color="primary" />,
       isExpandable: true,
       tabs: [
         {
           name: "Terms & Conditions",
           link: "/terms_conditions",
-          icon: <HandshakeIcon />,
+          icon: <HandshakeIcon color="primary" />,
         },
         {
           name: "Privacy Policy",
           link: "/privacy_policy",
-          icon: <PolicyIcon />,
+          icon: <PolicyIcon color="primary" />,
         },
       ],
     },
@@ -91,33 +91,33 @@ export default function Sidebar({ open, toggleDrawer }) {
     {
       name: "Service Management",
       link: "/service",
-      icon: <DesignServicesIcon />,
+      icon: <DesignServicesIcon color="primary" />,
     },
     {
       name: "Training Session Management",
       link: "/training_session_management",
-      icon: <MedicalInformationIcon />,
+      icon: <MedicalInformationIcon color="primary" />,
     },
     {
       name: "Dynamic Drill",
       // link: "",
-      icon: <AssignmentIcon />,
+      icon: <AssignmentIcon color="primary" />,
       isExpandable: true,
       tabs: [
         {
           name: "Drill Names",
           link: "/drill-names",
-          icon: <TaskIcon />,
+          icon: <TaskIcon color="primary" />,
         },
         {
           name: "Drill Input Parameters",
           link: "/drill-inputs",
-          icon: <DriveFileRenameOutlineIcon />,
+          icon: <DriveFileRenameOutlineIcon color="primary" />,
         },
         {
           name: "Fix Column/Value",
           link: "/drill-col-val",
-          icon: <SportsHockeyIcon />,
+          icon: <SportsHockeyIcon color="primary" />,
         },
       ],
     },
@@ -127,22 +127,22 @@ export default function Sidebar({ open, toggleDrawer }) {
     {
       name: "Evaluation Form",
       link: "/eval-form",
-      icon: <BorderColorIcon />,
+      icon: <BorderColorIcon color="primary" />,
     },
     {
       name: "Prescription Form",
       link: "/pres-form",
-      icon: <DrawIcon />,
+      icon: <DrawIcon color="primary" />,
     },
     {
       name: "Diagnosis Form",
       link: "/diagnosis-form",
-      icon: <DriveFileRenameOutlineIcon />,
+      icon: <DriveFileRenameOutlineIcon color="primary" />,
     },
     {
       name: "Drills Form",
       link: "/drills-form",
-      icon: <DriveFileRenameOutlineIcon />,
+      icon: <DriveFileRenameOutlineIcon color="primary" />,
     },
   ];
 
@@ -150,7 +150,7 @@ export default function Sidebar({ open, toggleDrawer }) {
     return (
       <Accordion sx={{ width: "100%" }} elevation={0} disableGutters>
         <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon color="primary" />}
           sx={{ p: 0, m: 0 }}
           style={{ paddingRight: "1rem" }}
         >
