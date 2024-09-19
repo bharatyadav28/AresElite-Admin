@@ -49,7 +49,7 @@ export default function ActivityForm({
     formData.type === "multipleChoice" || formData.type === "checkBox";
   const isEditableOn = isEditable !== index;
 
-  console.log("unit", unit);
+  // console.log("unit", unit);
 
   useEffect(() => {
     let newFormData = {
