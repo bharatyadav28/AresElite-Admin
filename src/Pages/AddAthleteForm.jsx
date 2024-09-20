@@ -26,7 +26,7 @@ const AddAthleteForm = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
-    suffix: "",
+    prefix: "",
     email: "",
     city: "",
     phone: "",
@@ -52,12 +52,15 @@ const AddAthleteForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const is_online = formData.mode === "online" ? true : false;
+
     if (isEdit) {
-      await updateAthlete(dispatch, formData, object._id);
+      await updateAthlete(dispatch, { ...formData, is_online }, object._id);
     } else {
-      await AddAthlete(dispatch, formData).then((_) => {
+      const res = await AddAthlete(dispatch, { ...formData, is_online });
+      if (res) {
         navigate("/user_management");
-      });
+      }
     }
   };
 
@@ -96,9 +99,9 @@ const AddAthleteForm = () => {
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 {[
+                  { label: "Prefix", name: "prefix" },
                   { label: "First Name", name: "firstName" },
                   { label: "Last Name", name: "lastName" },
-                  { label: "Suffix", name: "suffix" },
                 ].map((field) =>
                   isEdit ? (
                     <Grid item xs={3} key={field.name}>
@@ -251,12 +254,20 @@ const AddAthleteForm = () => {
                         <Select
                           label="Mode"
                           name="mode"
-                          value={formData.mode}
+                          value={
+                            formData.mode
+                              ? ["online", "offline"].includes(formData.mode)
+                                ? formData.mode
+                                : formData.is_online
+                                ? "online"
+                                : "offline"
+                              : ""
+                          }
                           onChange={handleChange}
                         >
                           <MenuItem value="">None</MenuItem>
                           <MenuItem value="online">Online</MenuItem>
-                          <MenuItem value="offline">Offline</MenuItem>
+                          <MenuItem value="offline">In-Office</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>

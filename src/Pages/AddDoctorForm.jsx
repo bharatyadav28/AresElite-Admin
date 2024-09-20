@@ -28,7 +28,7 @@ const AddDoctorForm = () => {
     lastName: "",
     startTime: "",
     endTime: "",
-    suffix: "",
+    prefix: "",
     gender: "",
     dob: "",
     address: "",
@@ -115,6 +115,11 @@ const AddDoctorForm = () => {
               <Grid container spacing={2}>
                 {[
                   {
+                    label: "Prefix",
+                    name: "prefix",
+                    value: formData.prefix,
+                  },
+                  {
                     label: "First Name",
                     name: "firstName",
                     value: formData.firstName,
@@ -123,11 +128,6 @@ const AddDoctorForm = () => {
                     label: "Last Name",
                     name: "lastName",
                     value: formData.lastName,
-                  },
-                  {
-                    label: "Suffix",
-                    name: "suffix",
-                    value: formData.suffix,
                   },
                 ].map((field) =>
                   isEdit ? (

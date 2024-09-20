@@ -99,7 +99,7 @@ function Row(props) {
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell component="th" scope="row" sx={{ paddingBlock: "1.5rem" }}>
           {row.clientId !== null
-            ? `${row.clientId.suffix} ${row.clientId.firstName} ${row.clientId.lastName}`
+            ? `${row.clientId.prefix} ${row.clientId.firstName} ${row.clientId.lastName}`
             : "---"}
         </TableCell>
         <TableCell>{formatDateToMMDDYYYY(row.date)}</TableCell>

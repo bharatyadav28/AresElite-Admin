@@ -98,6 +98,14 @@ const PresformManagement = () => {
     setFormElements(fEle?.obj || []);
   }, [selectedService, incomingData]);
 
+  const menuTitle = (key) => {
+    if (key === "Sports Vision Evaluation")
+      return "Sports Vision Performance Evaluation";
+    if (key === "Add Training Sessions") return "Training Sessions";
+
+    return key;
+  };
+
   const headContent = (
     <div
       style={{
@@ -132,9 +140,7 @@ const PresformManagement = () => {
             >
               {services?.map((service, i) => (
                 <MenuItem key={i} value={service.value}>
-                  {service.key === "Sports Vision Evaluation"
-                    ? "Sports Vision Performance Evaluation"
-                    : service.key}
+                  {menuTitle(service.key)}
                 </MenuItem>
               ))}
             </Select>
