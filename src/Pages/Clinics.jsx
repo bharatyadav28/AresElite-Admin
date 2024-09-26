@@ -43,8 +43,8 @@ import axiosInstance from "../utils/axiosUtil";
 
 const Clinics = () => {
   const dispatch = useDispatch();
-  const { isFetching, clinics, DeleteClinicSuccess,
-    DeleteClinicFailure } = useSelector((state) => state.clinic);
+  const { isFetching, clinics, DeleteClinicSuccess, DeleteClinicFailure } =
+    useSelector((state) => state.clinic);
   const [value, setValue] = React.useState(dayjs(new Date()));
   const [addClinicAdd, setAddClinicAdd] = useState(false);
   const [openalert, setOpenalert] = React.useState(false);
@@ -100,7 +100,7 @@ const Clinics = () => {
 
   const handleDel = async () => {
     if (openalert) {
-      handleCloseAlert();  // Close the alert if already open
+      handleCloseAlert(); // Close the alert if already open
 
       try {
         // Await the DeleteClinic function to handle the promise correctly
@@ -118,7 +118,6 @@ const Clinics = () => {
             window.location.reload();
           }, 1000);
         }
-
       } catch (error) {
         setTimeout(() => {
           window.location.reload();
@@ -176,7 +175,7 @@ const Clinics = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Typography variant="h2" gutterBottom style={{ padding: "50px" }}>
+      <Typography variant="h3" gutterBottom style={{ padding: "50px" }}>
         Clinics Management
       </Typography>
       <Grid container spacing={2}>

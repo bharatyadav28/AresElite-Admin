@@ -11,6 +11,7 @@ import SlotManagement from "./Pages/SlotManagement";
 import EvalformManagement from "./Pages/EvalformManagement";
 import DrillsFormManagement from "./Pages/DrillsFormManagement";
 import TrainingSessionManagement from "./Pages/TrainingSessionManagement";
+import ShipmentManagement from "./Pages/ShipmentMangement";
 
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
@@ -47,6 +48,12 @@ const theme = createTheme({
       main: "#f44336",
       dark: "#fff",
       contrastText: "#000",
+    },
+  },
+  typography: {
+    h3: {
+      fontSize: "3rem", // Set a consistent font size
+      margin: 0, // Remove any unwanted margin
     },
   },
 });
@@ -101,6 +108,23 @@ function App() {
             }
           />
 
+          <Route
+            path="/shipping-management/shipment"
+            element={
+              <Home>
+                <Shipment />
+              </Home>
+            }
+          />
+
+          <Route
+            path="/shipping-management/shipment/create"
+            element={
+              <Home>
+                <Shipment />
+              </Home>
+            }
+          />
           <Route
             path="/clinics"
             element={
@@ -259,6 +283,15 @@ function App() {
             element={
               <Home>
                 <DrillColVal />
+              </Home>
+            }
+          />
+
+          <Route
+            path="/shipping-management"
+            element={
+              <Home>
+                <ShipmentManagement />
               </Home>
             }
           />

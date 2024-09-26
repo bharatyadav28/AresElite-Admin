@@ -158,6 +158,8 @@ const UserManagement = () => {
     (state) => state?.booking
   );
 
+  console.log("bookings", users);
+
   const [open, setOpen] = React.useState(false);
   const [openView, setOpenView] = React.useState(false);
   const [activeView, setActiveView] = React.useState(null);
@@ -297,7 +299,7 @@ const UserManagement = () => {
           alignItems: "center",
         }}
         style={{ width: "100vw", height: "90vh", marginTop: "2rem" }}
-      // component={Paper}
+        // component={Paper}
       >
         <Grid container spacing={2} style={{ width: "95vw" }} component={Paper}>
           <Box
@@ -309,7 +311,7 @@ const UserManagement = () => {
               height: "30px",
               padding: "10px",
             }}
-          // component={Paper}
+            // component={Paper}
           >
             <Search
               component={Paper}
@@ -850,15 +852,15 @@ const UserManagement = () => {
                         {activeView?.role === "doctor"
                           ? "Dr. "
                           : activeView?.gender === "Female"
-                            ? Math.floor(
+                          ? Math.floor(
                               (new Date() - new Date(activeView?.dob)) /
-                              (1000 * 60 * 60 * 24 * 365.25)
+                                (1000 * 60 * 60 * 24 * 365.25)
                             ) < 25
-                              ? "Miss. "
-                              : "Mrs. "
-                            : "Mr. "}
+                            ? "Miss. "
+                            : "Mrs. "
+                          : "Mr. "}
                         {activeView?.firstName} {activeView?.lastName}
-                        { }
+                        {}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -1024,8 +1026,8 @@ const UserManagement = () => {
                                 booking?.status === "pending"
                                   ? "warning"
                                   : booking?.status === "paid"
-                                    ? "success"
-                                    : "danger"
+                                  ? "success"
+                                  : "danger"
                               }
                               sx={{ width: "50%", textTransform: "uppercase" }}
                               label={booking?.status}
@@ -1037,10 +1039,10 @@ const UserManagement = () => {
                                 booking?.service_status === "upcoming"
                                   ? "warning"
                                   : booking?.service_status === "completed"
-                                    ? "success"
-                                    : booking?.service_status === "cancelled"
-                                      ? "error"
-                                      : "primary"
+                                  ? "success"
+                                  : booking?.service_status === "cancelled"
+                                  ? "error"
+                                  : "primary"
                               }
                               // color="primary"
                               sx={{ width: "100%", textTransform: "uppercase" }}

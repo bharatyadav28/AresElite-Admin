@@ -584,6 +584,37 @@ export const GetAllUsers = async (dispatch, page, searchQuery) => {
   }
 };
 
+export const GetAllShipmentUsers = async (
+  dispatch,
+  page,
+  searchQuery,
+  filters
+) => {
+  try {
+    let filter = null;
+    if (filters && (!filters.completed || !filters.pending)) {
+      filter = filters.completed;
+    }
+    console.log("filter", filter);
+    const { data } = await axiosInstance.get(
+      `/api/admin/get_all_shipment_users`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          page_no: page,
+          searchQuery: searchQuery,
+          filter: filter,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    dispatch(getFailure(error?.response?.data?.error));
+  }
+};
+
 export const DeleteUser = async (dispatch, id) => {
   dispatch(deleteStart());
   try {

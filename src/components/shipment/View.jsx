@@ -55,7 +55,9 @@ export default function Shipment() {
 
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const isNewShipment = pathname === "/user_management/shipment/create";
+  const isNewShipment =
+    pathname === "/user_management/shipment/create" ||
+    pathname === "/shipping-management/shipment/create";
 
   const { Plans, isFetching } = useSelector((state) => state.plan);
   const [Phases, setPhases] = useState([]);
@@ -206,7 +208,11 @@ export default function Shipment() {
           title: "Success",
           text: "Successfully created new shipment",
         }).then(() => {
-          navigate("/user_management", {
+          let path = "/user_management";
+          if (pathname.includes("shipping-management")) {
+            path = "/shipping-management";
+          }
+          navigate(path, {
             state: { index: 4, user: state.user },
             replace: true,
           });
@@ -254,12 +260,14 @@ export default function Shipment() {
           }
         );
         console.log("...response update:", res.data);
+
         setIsEditing(false);
         Swal.fire({
           icon: "success",
           title: "Success",
           text: "Successfully updated shipment",
         });
+        fetchShipmentDetails();
       } catch (err) {
         console.log("...error updating new shipment data:", err);
         Swal.fire({
@@ -344,12 +352,16 @@ export default function Shipment() {
       <Button
         style={{ marginTop: "1.5%", marginInline: "4%" }}
         startIcon={<ArrowBackIcon />}
-        onClick={() =>
-          navigate("/user_management", {
+        onClick={() => {
+          let path = "/user_management";
+          if (pathname.includes("shipping-management")) {
+            path = "/shipping-management";
+          }
+          navigate(path, {
             state: { index: 4, user: state.user },
             replace: true,
-          })
-        }
+          });
+        }}
       >
         Go back
       </Button>

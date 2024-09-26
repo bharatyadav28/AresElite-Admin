@@ -26,6 +26,7 @@ import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TaskIcon from "@mui/icons-material/Task";
 import SportsHockeyIcon from "@mui/icons-material/SportsHockey";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 
 import { Link } from "react-router-dom";
 import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
@@ -53,6 +54,11 @@ export default function Sidebar({ open, toggleDrawer }) {
       name: "Slots Management",
       link: "/slots",
       icon: <WorkHistoryIcon color="primary" />,
+    },
+    {
+      name: "Shipping Management",
+      link: "/shipping-management",
+      icon: <LocalShippingIcon color="primary" />,
     },
     {
       name: "Bookings Management",
