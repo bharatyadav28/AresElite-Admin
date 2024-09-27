@@ -667,11 +667,8 @@ export default function SlotManagement() {
           onSubmit: handleUpdate,
         }}
       >
-        <DialogTitle>Update Slot</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Change things you want to update
-          </DialogContentText>
+        <DialogTitle style={{ fontWight: 600 }}>Update Slot</DialogTitle>
+        <DialogContent style={{ paddingBottom: "0.5rem" }}>
           <TextField
             autoFocus
             disabled={true}
@@ -684,6 +681,9 @@ export default function SlotManagement() {
             variant="standard"
             defaultValue={slot?.doctor}
             value={formDataUpdate.doctor}
+            style={{
+              marginTop: "0.5rem",
+            }}
           />
           <FormControl fullWidth variant="outlined" margin="normal">
             <InputLabel>Clinic</InputLabel>
@@ -709,9 +709,10 @@ export default function SlotManagement() {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-around",
+              // justifyContent: "space-around",
               gap: "12px",
-              margin: "12px",
+              marginTop: "12px",
+              marginBottom: "12px",
             }}
           >
             <TimePicker
@@ -729,7 +730,9 @@ export default function SlotManagement() {
             />
           </Box>
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          style={{ marginBottom: "0.5rem", marginRight: "0.5rem" }}
+        >
           <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button type="submit">Update</Button>
         </DialogActions>
