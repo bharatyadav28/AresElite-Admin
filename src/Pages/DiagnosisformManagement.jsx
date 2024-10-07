@@ -139,7 +139,8 @@ const DiagnosisformManagement = () => {
             >
               {services?.map((service, i) => (
                 <MenuItem key={i} value={service.value}>
-                  {menuTitle(service.key)}
+                  {/* {menuTitle(service.key)} */}
+                  {service.key}
                 </MenuItem>
               ))}
             </Select>

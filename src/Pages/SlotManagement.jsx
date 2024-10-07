@@ -62,9 +62,9 @@ export default function SlotManagement() {
     isFetching: fetchingSlots,
     error: errorSlot,
     slots,
-    doctor
+    doctor,
   } = useSelector((state) => state.slot);
-  console.log(doctor)
+
   const [slot, setSlot] = React.useState({});
   const [open, setOpen] = React.useState(false);
   const [selectedOption, setSelectedOption] = React.useState("");
@@ -76,6 +76,7 @@ export default function SlotManagement() {
     startDate: `${date.$D}/${date.$M + 1}/${date.$y}`,
     endDate: `${date.$D}/${date.$M + 1}/${date.$y}`,
     doctor: null,
+    clinic: null,
     address: null,
     startTime: null,
     endTime: null,
@@ -85,6 +86,7 @@ export default function SlotManagement() {
     startDate: `${date.$D}/${date.$M + 1}/${date.$y}`,
     endDate: `${date.$D}/${date.$M + 1}/${date.$y}`,
     doctor: null,
+    clinic: null,
     address: null,
     startTime: null,
     endTime: null,
@@ -95,13 +97,14 @@ export default function SlotManagement() {
   const handleClickOpenMapper = (clinic) => {
     setSetToId(clinic);
     setOpenMapper(true);
-    setFormData({ ...formData, address: clinic.address });
+    setFormData({ ...formData, address: clinic.address, clinic: clinic._id });
   };
 
   const handleTimeChange = (time, setter) => {
     const formattedTime = time
-      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${time?.$H > 12 ? "PM" : "AM"
-      }`
+      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${
+          time?.$H > 12 ? "PM" : "AM"
+        }`
       : "";
     setter(time);
     setFormData((prevData) => ({
@@ -134,8 +137,9 @@ export default function SlotManagement() {
 
   const handleTimeChangeUpdate = (time, setter) => {
     const formattedTime = time
-      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${time?.$H > 12 ? "PM" : "AM"
-      }`
+      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${
+          time?.$H > 12 ? "PM" : "AM"
+        }`
       : "";
 
     setter(time);
@@ -152,7 +156,12 @@ export default function SlotManagement() {
 
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
-    setFormDataUpdate({ ...formDataUpdate, address: event.target.value });
+    const address = clinics.find((c) => c._id === event.target.value)?.address;
+    setFormDataUpdate({
+      ...formDataUpdate,
+      clinic: event.target.value,
+      address,
+    });
   };
 
   const handleChangeDone = (event) => {
@@ -163,7 +172,7 @@ export default function SlotManagement() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData)
+    console.log(formData);
     setFormData({
       ...formData,
       startDate: `${date.$D}/${date.$M + 1}/${date.$y}`,
@@ -178,7 +187,7 @@ export default function SlotManagement() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    console.log(formDataUpdate);
+    console.log("data", formDataUpdate);
     await updateSlot(dispatch, slot._id, formDataUpdate, date).then((res) => {
       console.log(res);
       fetch();
@@ -212,6 +221,7 @@ export default function SlotManagement() {
     setFormDataUpdate({
       ...formData,
       doctor: slot.doctor,
+      clinic: slot.clinic._id,
       address: slot.address,
       startTime: slot.startTime,
       endTime: slot.endTime,
@@ -237,9 +247,15 @@ export default function SlotManagement() {
 
   const [getIndex, setIndex] = useState(-1);
 
+  const doctorPic = (name) => {
+    const pic = doctor.find((d) => d.firstName === name)?.profilePic;
+
+    return pic;
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Typography variant="h2" gutterBottom style={{ padding: "50px" }}>
+      <Typography variant="h3" gutterBottom style={{ padding: "50px" }}>
         Slot Management
       </Typography>
       <Grid container spacing={2}>
@@ -268,7 +284,7 @@ export default function SlotManagement() {
           >
             <DateCalendar
               value={date}
-              maxDate={dayjs().add(5, 'day')}
+              maxDate={dayjs().add(5, "day")}
               onChange={(newValue) => {
                 setFormData({
                   ...formData,
@@ -277,7 +293,7 @@ export default function SlotManagement() {
                 });
                 setDate(newValue);
               }}
-            // disablePast={true}
+              // disablePast={true}
             />
             <Typography
               variant="subtitle2"
@@ -315,15 +331,26 @@ export default function SlotManagement() {
                         }}
                         component={Paper}
                       >
-                        <Grid style={{ display: 'flex', alignItems: 'center' }} xs={3}>
-                          {doctor.profilePic ?
-                            <img src={doctor.profilePic} style={{ width: 56, height: 56, borderRadius: '50%' }} alt="Profile" />
-                            :
+                        <Grid
+                          style={{ display: "flex", alignItems: "center" }}
+                          xs={3}
+                        >
+                          {doctorPic(slot.doctor) ? (
+                            <img
+                              src={doctorPic(slot.doctor)}
+                              style={{
+                                width: 56,
+                                height: 56,
+                                borderRadius: "50%",
+                              }}
+                              alt="Profile"
+                            />
+                          ) : (
                             <Avatar
                               {...stringAvatar(`Dr. ${slot?.doctor}`)}
                               sx={{ width: 56, height: 56 }}
                             />
-                          }
+                          )}
                         </Grid>
                         <Grid
                           xs={9}
@@ -338,7 +365,9 @@ export default function SlotManagement() {
                               {slot?.doctor}
                             </Typography>
                             <Typography variant="caption" color="textPrimary">
-                              {formatTime(slot?.startTime)} to {formatTime(slot?.endTime)} at {slot?.address}
+                              {formatTime(slot?.startTime)} to{" "}
+                              {formatTime(slot?.endTime)} at{" "}
+                              {slot?.clinic?.name}
                             </Typography>
                           </Box>
                           <Box
@@ -389,7 +418,6 @@ export default function SlotManagement() {
                   )}
                 </>
               )}
-
             </Box>
           </Container>
         </Grid>
@@ -639,11 +667,8 @@ export default function SlotManagement() {
           onSubmit: handleUpdate,
         }}
       >
-        <DialogTitle>Update Slot</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Change things you want to update
-          </DialogContentText>
+        <DialogTitle style={{ fontWight: 600 }}>Update Slot</DialogTitle>
+        <DialogContent style={{ paddingBottom: "0.5rem" }}>
           <TextField
             autoFocus
             disabled={true}
@@ -656,24 +681,27 @@ export default function SlotManagement() {
             variant="standard"
             defaultValue={slot?.doctor}
             value={formDataUpdate.doctor}
+            style={{
+              marginTop: "0.5rem",
+            }}
           />
           <FormControl fullWidth variant="outlined" margin="normal">
-            <InputLabel>Doctor</InputLabel>
+            <InputLabel>Clinic</InputLabel>
             <Select
               label="Clinic"
               name="clinic"
               onChange={handleChange}
               value={
-                formDataUpdate.address
-                  ? formDataUpdate.address
+                formDataUpdate.clinic
+                  ? formDataUpdate.clinic
                   : selectedOption === ""
-                    ? clinics[getIndex]?.address
-                    : selectedOption
+                  ? clinics[getIndex]?._id
+                  : selectedOption
               }
             >
               {clinics?.map((clinic, i) => (
-                <MenuItem key={i} value={clinic.address}>
-                  {clinic.address}
+                <MenuItem key={i} value={clinic._id}>
+                  {clinic.name}
                 </MenuItem>
               ))}
             </Select>
@@ -681,9 +709,10 @@ export default function SlotManagement() {
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-around",
+              // justifyContent: "space-around",
               gap: "12px",
-              margin: "12px",
+              marginTop: "12px",
+              marginBottom: "12px",
             }}
           >
             <TimePicker
@@ -701,7 +730,9 @@ export default function SlotManagement() {
             />
           </Box>
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          style={{ marginBottom: "0.5rem", marginRight: "0.5rem" }}
+        >
           <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button type="submit">Update</Button>
         </DialogActions>

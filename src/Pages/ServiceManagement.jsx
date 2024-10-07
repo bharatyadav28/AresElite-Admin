@@ -138,9 +138,9 @@ function Row(props) {
                 value={data.name}
                 onChange={(e) => setData({ ...data, name: e.target.value })}
                 placeholder="Service name"
-                disabled={"disabled"}
               /> */}
-              {serviceName}
+              {/* {serviceName} */}
+              {row.name}
             </TableCell>
             <TableCell>
               <TextField
@@ -166,7 +166,8 @@ function Row(props) {
               scope="row"
               sx={{ paddingBlock: "1.5rem" }}
             >
-              {serviceName}
+              {/* {serviceName} */}
+              {row.name}
             </TableCell>
             <TableCell>$ {row.cost?.toLocaleString("en-US")}</TableCell>
             <TableCell>{row.duration}</TableCell>
@@ -539,28 +540,28 @@ export default function ServiceManagement({ user }) {
             <TableBody>
               {!isLoading && filterData.name === ""
                 ? services.map((row) => (
-                  <Row
-                    key={row._id}
-                    row={row}
-                    token={token}
-                    shouldRefetch={setShouldRefetch}
-                  />
-                ))
-                : services
-                  .filter((service) =>
-                    service.name
-                      .toLowerCase()
-                      .includes(filterData.name.toLowerCase())
-                  )
-                  .map((row) => (
                     <Row
                       key={row._id}
                       row={row}
                       token={token}
                       shouldRefetch={setShouldRefetch}
-                      style={{ text: 'center' }}
                     />
-                  ))}
+                  ))
+                : services
+                    .filter((service) =>
+                      service.name
+                        .toLowerCase()
+                        .includes(filterData.name.toLowerCase())
+                    )
+                    .map((row) => (
+                      <Row
+                        key={row._id}
+                        row={row}
+                        token={token}
+                        shouldRefetch={setShouldRefetch}
+                        style={{ text: "center" }}
+                      />
+                    ))}
             </TableBody>
           </Table>
         </TableContainer>
