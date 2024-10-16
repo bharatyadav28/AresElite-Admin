@@ -102,10 +102,9 @@ export default function SlotManagement() {
 
   const handleTimeChange = (time, setter) => {
     const formattedTime = time
-      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${
-          time?.$H > 12 ? "PM" : "AM"
-        }`
+      ? `${time.$H === 0 ? 12 : time.$H > 12 ? time.$H - 12 : time.$H}:${time.$m < 10 ? `0${time.$m}` : time.$m} ${time.$H >= 12 ? "PM" : "AM"}`
       : "";
+
     setter(time);
     setFormData((prevData) => ({
       ...prevData,
@@ -137,9 +136,8 @@ export default function SlotManagement() {
 
   const handleTimeChangeUpdate = (time, setter) => {
     const formattedTime = time
-      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${
-          time?.$H > 12 ? "PM" : "AM"
-        }`
+      ? `${time?.$H > 12 ? time?.$H - 12 : time?.$H}:${time?.$m} ${time?.$H > 12 ? "PM" : "AM"
+      }`
       : "";
 
     setter(time);
@@ -293,7 +291,7 @@ export default function SlotManagement() {
                 });
                 setDate(newValue);
               }}
-              // disablePast={true}
+            // disablePast={true}
             />
             <Typography
               variant="subtitle2"
@@ -695,8 +693,8 @@ export default function SlotManagement() {
                 formDataUpdate.clinic
                   ? formDataUpdate.clinic
                   : selectedOption === ""
-                  ? clinics[getIndex]?._id
-                  : selectedOption
+                    ? clinics[getIndex]?._id
+                    : selectedOption
               }
             >
               {clinics?.map((clinic, i) => (
