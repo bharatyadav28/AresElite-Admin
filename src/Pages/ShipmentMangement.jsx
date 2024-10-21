@@ -227,7 +227,7 @@ const ShipmentManagement = () => {
         variant="h3"
         style={{ paddingTop: "1rem", marginLeft: "2rem" }}
       >
-        Shipment Management
+        Shipping Management
       </Typography>
       <Box
         sx={{

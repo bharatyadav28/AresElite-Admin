@@ -52,7 +52,7 @@ const theme = createTheme({
   },
   typography: {
     h3: {
-      fontSize: "3rem", // Set a consistent font size
+      fontSize: "2.5rem", // Set a consistent font size
       margin: 0, // Remove any unwanted margin
     },
   },

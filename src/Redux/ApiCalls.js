@@ -262,9 +262,10 @@ export const AddAthlete = async (dispatch, formdata) => {
     Swal.fire({
       icon: "success",
       title: "Done...",
-      text: "A Athlete profile is added successfully",
+      text: "Athlete profile has been added successfully",
     });
     dispatch(addAthleteSuccess(data));
+    return data;
   } catch (error) {
     Swal.fire({
       icon: "error",

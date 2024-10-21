@@ -58,6 +58,7 @@ const AddAthleteForm = () => {
       await updateAthlete(dispatch, { ...formData, is_online }, object._id);
     } else {
       const res = await AddAthlete(dispatch, { ...formData, is_online });
+      console.log("res", res);
       if (res) {
         navigate("/user_management");
       }
