@@ -46,7 +46,8 @@ const AddAthleteForm = () => {
   };
 
   const handleDateChange = (date) => {
-    const formattedDate = date ? `${date.$D}/${date.$M}/${date.$y}` : "";
+    // const formattedDate = date ? `${date.$D}/${date.$M}/${date.$y}` : "";
+    const formattedDate = dayjs(date).toISOString();
     setFormData((prevData) => ({ ...prevData, dob: formattedDate }));
   };
 

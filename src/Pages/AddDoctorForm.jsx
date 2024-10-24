@@ -17,6 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AddDoctor, updateDoctor } from "../Redux/ApiCalls";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const AddDoctorForm = () => {
   const location = useLocation();
@@ -51,7 +52,8 @@ const AddDoctorForm = () => {
   };
 
   const handleDateChange = (date) => {
-    const formattedDate = date ? `${date?.$D}/${date?.$M}/${date?.$y}` : "";
+    // const formattedDate = date ? `${date?.$D}/${date?.$M}/${date?.$y}` : "";
+    const formattedDate = dayjs(date).toISOString();
     setFormData((prevData) => ({ ...prevData, dob: formattedDate }));
   };
 
@@ -279,6 +281,7 @@ const AddDoctorForm = () => {
                     fullWidth
                     name="dob"
                     label="Date of birth"
+                    value={dayjs(formData.dob)}
                     onChange={handleDateChange}
                     // slotProps={{
                     //   textField: {
