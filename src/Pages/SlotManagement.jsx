@@ -539,7 +539,7 @@ export default function SlotManagement() {
                             },
                           }}
                         >
-                          Map
+                          Edit
                         </Button>
                       </TableCell>
                     </TableRow>
