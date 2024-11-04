@@ -20,18 +20,17 @@ export function formatDateToMMDDYYYY(dateString) {
 }
 
 export function formatPhoneNumber(number) {
-  const numStr = number.toString();
+  // Ensure input is a string
+  let numStr = typeof number === "number" ? number.toString() : number;
 
-  if (numStr.length !== 10) {
-    return "Invalid number ";
+  // Check if the string has exactly 10 digits
+  if (numStr?.length === 10) {
+    // Format the number in (XXX) XXX-XXXX format
+    return `(${numStr.slice(0, 3)}) ${numStr.slice(3, 6)}-${numStr.slice(6)}`;
   }
 
-  const formattedNumber = `(${numStr.slice(0, 3)}) ${numStr.slice(
-    3,
-    6
-  )}-${numStr.slice(6)}`;
-
-  return formattedNumber;
+  // Return the original input if it's not a valid 10-digit number
+  return numStr;
 }
 
 // Example usage:

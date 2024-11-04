@@ -39,7 +39,10 @@ import axiosInstance from "../../utils/axiosUtil";
 import Swal from "sweetalert2";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import dayjs from "dayjs";
 
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 const SHIPMENT_STATUS = [
   { value: "order placed", label: "Order Placed" },
   { value: "order dispatched", label: "Order Dispatched" },
@@ -956,7 +959,8 @@ export default function Shipment() {
                                   {sta.label}
                                 </Typography>
                                 <Typography variant="caption">
-                                  {sta.startDate} - {sta.endDate}
+                                  {dayjs(sta.startDate).format("MM/DD/YYYY")} -{" "}
+                                  {dayjs(sta.endDate).format("MM/DD/YYYY")}
                                 </Typography>
                                 <Typography
                                   variant="caption"
@@ -1197,77 +1201,68 @@ export default function Shipment() {
                         }}
                       >
                         <Box>
-                          <OutlinedInput
-                            // endAdornment={
-                            //   <InputAdornment position="end">
-                            //     <IconButton
-                            //       style={{ padding: 0 }}
-                            //       onClick={handleStartDateToggle}
-                            //     >
-                            //       <InsertInvitationIcon />
-                            //     </IconButton>
-                            //   </InputAdornment>
-                            // }
-                            value={
+                          <DatePicker
+                            value={dayjs(
                               newStatus.startDate ||
-                              data.status.at(-1)?.startDate
-                            }
-                            onChange={(e) =>
+                                data.status.at(-1)?.startDate
+                            )}
+                            onChange={(date) =>
                               setNewStatus({
                                 ...newStatus,
-                                startDate: e.target.value,
+                                startDate: dayjs(date).toISOString(),
                               })
                             }
-                            fullWidth
-                            style={{
-                              backgroundColor: colors.grey[100],
-                              padding: "2%",
-                            }}
-                            sx={{
-                              border: "none",
-                              "& fieldset": { border: "none" },
-                            }}
-                            placeholder="Select start date"
-                            type="date"
-                            className="remove-calender-icon"
+                            inputFormat="MM/dd/yyyy"
+                            renderInput={(params) => (
+                              <OutlinedInput
+                                {...params}
+                                fullWidth
+                                style={{
+                                  backgroundColor: colors.grey[100],
+                                  padding: "2%",
+                                }}
+                                sx={{
+                                  border: "none",
+                                  "& fieldset": { border: "none" },
+                                }}
+                                placeholder="Select start date"
+                                className="remove-calender-icon"
+                              />
+                            )}
                           />
-                          {/* {isStartDateOpen && (
-                            <DateCalendar fullWidth name="startDate" />
-                          )} */}
                         </Box>
                         <Box>
-                          <OutlinedInput
-                            type="date"
-                            // endAdornment={
-                            //   <InputAdornment position="end">
-                            //     <IconButton
-                            //       style={{ padding: 0 }}
-                            //       onClick={handleEndDateToggle}
-                            //     >
-                            //       <InsertInvitationIcon />
-                            //     </IconButton>
-                            //   </InputAdornment>
-                            // }
-                            value={
-                              newStatus.endDate || data.status.at(-1)?.endDate
-                            }
-                            onChange={(e) =>
-                              setNewStatus({
-                                ...newStatus,
-                                endDate: e.target.value,
-                              })
-                            }
-                            fullWidth
-                            style={{
-                              backgroundColor: colors.grey[100],
-                              padding: "2%",
-                            }}
-                            sx={{
-                              border: "none",
-                              "& fieldset": { border: "none" },
-                            }}
-                            placeholder="Select end date"
-                          />
+                          <LocalizationProvider>
+                            <DatePicker
+                              value={dayjs(
+                                newStatus.endDate || data.status.at(-1)?.endDate
+                              )}
+                              onChange={(date) =>
+                                setNewStatus({
+                                  ...newStatus,
+                                  endDate: dayjs(date).toISOString(),
+                                })
+                              }
+                              inputFormat="MM/dd/yyyy"
+                              renderInput={(params) => (
+                                <OutlinedInput
+                                  {...params}
+                                  fullWidth
+                                  style={{
+                                    backgroundColor: colors.grey[100],
+                                    padding: "2%",
+                                    width: "100%",
+                                  }}
+                                  sx={{
+                                    border: "none",
+                                    "& fieldset": { border: "none" },
+                                  }}
+                                  placeholder="Select start date"
+                                  className="remove-calender-icon"
+                                />
+                              )}
+                            />
+                          </LocalizationProvider>
                         </Box>
                       </Box>
                       <Box sx={{ width: "100%", mt: "4%" }}>

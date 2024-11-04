@@ -285,7 +285,7 @@ export default function SlotManagement() {
           >
             <DateCalendar
               value={date}
-              maxDate={dayjs().add(5, "day")}
+              maxDate={dayjs().add(60, "day")}
               onChange={(newValue) => {
                 setFormData({
                   ...formData,
