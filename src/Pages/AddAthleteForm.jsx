@@ -140,7 +140,7 @@ const AddAthleteForm = () => {
                   { label: "City", name: "city" },
                   { label: "State", name: "state" },
                   { label: "Zip Code", name: "zip" },
-                  { label: "Phone", name: "phone", type: "number" },
+                  { label: "Phone", name: "phone", type: "text" },
                 ].map((field) =>
                   isEdit ? (
                     <Grid item xs={3} key={field.name}>
@@ -213,7 +213,9 @@ const AddAthleteForm = () => {
                       <MenuItem value="">None</MenuItem>
                       <MenuItem value="Male">Male</MenuItem>
                       <MenuItem value="Female">Female</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
+                      <MenuItem value="Prefer not to say">
+                        Prefer not to say
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

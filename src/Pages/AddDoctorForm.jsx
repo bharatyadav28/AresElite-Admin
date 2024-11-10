@@ -182,7 +182,7 @@ const AddDoctorForm = () => {
                   {
                     label: "Phone",
                     name: "phone",
-                    type: "number",
+                    type: "string",
                     value: formData.phone,
                   },
                 ].map((field) =>
@@ -263,7 +263,9 @@ const AddDoctorForm = () => {
                       <MenuItem value="">None</MenuItem>
                       <MenuItem value="male">Male</MenuItem>
                       <MenuItem value="female">Female</MenuItem>
-                      <MenuItem value="other">Other</MenuItem>
+                      <MenuItem value="Prefer not to say">
+                        Prefer not to say
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
