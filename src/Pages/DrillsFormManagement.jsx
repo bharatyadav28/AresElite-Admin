@@ -179,6 +179,7 @@ const DrillsFormManagement = () => {
 
     updatedActivities[index] = { ...data, fileLinks: updatedFileLinks };
     const updatedFormData = { ...formData, activities: updatedActivities };
+    console.log("formData: ", formData, "dsdsd:", updatedFormData);
 
     if (
       !updatedFormData.activities.every(

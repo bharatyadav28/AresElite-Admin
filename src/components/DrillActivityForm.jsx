@@ -11,12 +11,14 @@ import { Fragment, useEffect, useState } from "react";
 import { useResponsiveness } from "../hooks/useResponsiveness";
 import axiosInstance from "../utils/axiosUtil";
 import UploadImage from "./UploadImage";
+import { UploadVideo } from "./UploadImage";
 import Swal from "sweetalert2";
 import DeletableImage from "./DeletableImage.jsx";
 import CustomModal from "./Modal.jsx";
 // import { Clear, Delete } from "@material-ui/icons";
 import CustomDialog from "./CustomDialog.jsx";
 import { Clear, Delete } from "@mui/icons-material";
+import { max } from "moment/moment.js";
 
 export default function DrillActivityForm({
   isEditable,
@@ -75,7 +77,10 @@ export default function DrillActivityForm({
         setVideoLink(file);
       }
     });
+    const videoFiles = activity.fileLinks.find((file) => file.type === "video");
+    console.log("Activities: ", activity);
     setImages(imageFiles);
+    setVideoLink(videoFiles || { type: "video", link: "" });
     setDescription(activity.description);
   }, [
     activity.form,
@@ -93,7 +98,7 @@ export default function DrillActivityForm({
   };
 
   const handleUploadFile = async (e, type) => {
-    console.log("...file uploading...")
+    console.log("...file uploading...");
     const file = e.target.files[0];
     const fd = new FormData();
     fd.append("image", file);
@@ -140,7 +145,7 @@ export default function DrillActivityForm({
         if (type === "image") {
           setImages([...images, { type, link: res.data.link }]);
         } else if (type === "video") {
-          console.log("...video", {type, link:res.data.link})
+          console.log("...video", { type, link: res.data.link });
           setVideoLink({ type, link: res.data.link });
         }
       }
@@ -156,7 +161,7 @@ export default function DrillActivityForm({
     } finally {
       if (type === "image") {
         setIsImageUploading(false);
-      } else if (type === "video"){
+      } else if (type === "video") {
         setIsVideoUploading(false);
       }
     }
@@ -173,7 +178,7 @@ export default function DrillActivityForm({
           variant="h5"
           sx={{ display: "flex" }}
           style={{ marginInline: "2%", fontWeight: "500" }}
-          color='primary'
+          color="primary"
         >
           Add Activity
         </Typography>
@@ -277,6 +282,7 @@ export default function DrillActivityForm({
                 showDropArea={false}
                 onChange={(e) => handleUploadFile(e, "image")}
               />
+
               <Box
                 sx={{
                   marginTop: "2%",
@@ -318,12 +324,20 @@ export default function DrillActivityForm({
               }}
             >
               Video{" "}
-              <span>
+              <span
+                style={{
+                  fontSize: "1.1rem",
+                  fontWeight: "800",
+                  textDecoration: "underline",
+                  textDecorationColor: theme.palette.primary.main,
+                  marginLeft: "1rem",
+                }}
+              >
                 {!videoLink.link ? (
-                  <small>(video not uploaded)</small>
+                  <small>(Video not uploaded)</small>
                 ) : (
                   <small
-                    className="hover"
+                    className="hover2"
                     style={{
                       color: isEditableOn
                         ? colors.grey[400]
@@ -331,20 +345,22 @@ export default function DrillActivityForm({
                     }}
                     onClick={() => !isEditableOn && setIsVideoModalOpen(true)}
                   >
-                    see uploaded video
+                    See uploaded video
                   </small>
                 )}
               </span>
             </InputLabel>
+
             <FormControl required sx={{ m: 1, minWidth: 500 }} fullWidth>
-              <UploadImage
+              <UploadVideo
                 disabled={isVideoUploading || isEditableOn}
                 btnText="Upload Video"
-                // loading={isVideoUploading}
+                loading={isVideoUploading}
                 progress={videoUploadingProgress}
                 showDropArea={false}
                 onChange={(e) => handleUploadFile(e, "video")}
               />
+
               <CustomModal
                 open={isVideoModalOpen}
                 onClose={() => setIsVideoModalOpen(false)}
@@ -356,7 +372,7 @@ export default function DrillActivityForm({
                     padding: "4%",
                   }}
                 >
-                  <video width={"100%"} height={"100%"} autoPlay controls>
+                  <video width={"100%"} height="500rem" autoPlay controls>
                     <source src={videoLink.link} type="video/mp4" />
                     Your browser does not support the playing a video.
                   </video>
@@ -367,7 +383,7 @@ export default function DrillActivityForm({
                       justifyContent: "space-between",
                     }}
                   >
-                    {/* <IconButton
+                    <IconButton
                       onClick={() => {
                         setVideoLink({ type: "video", link: "" });
                         setIsVideoModalOpen(false);
@@ -377,7 +393,7 @@ export default function DrillActivityForm({
                     </IconButton>
                     <IconButton onClick={() => setIsVideoModalOpen(false)}>
                       <Clear color="primary" />
-                    </IconButton> */}
+                    </IconButton>
                   </div>
                 </Box>
               </CustomModal>
@@ -526,16 +542,13 @@ export default function DrillActivityForm({
                 isEditableOn || isSaving || isVideoUploading || isImageUploading
               }
               style={{
-                color: isEditableOn
-                  ? colors.grey[500]
-                  : "white",
+                color: isEditableOn ? colors.grey[500] : "white",
                 paddingInline: "5%",
                 paddingBlock: "2%",
                 textTransform: "none",
                 fontSize: lg ? "0.9rem" : "1.1rem",
                 width: lg ? "40%" : "50%",
                 borderRadius: "0.5rem",
-              
               }}
               onClick={() => {
                 onSave(index, {
@@ -577,7 +590,6 @@ export default function DrillActivityForm({
               Remove Activity
             </Button>
             {!isEditableOn ? (
-             
               <Button
                 disableElevation
                 variant="contained"
@@ -596,7 +608,6 @@ export default function DrillActivityForm({
                 Cancel
               </Button>
             ) : (
-              
               <Button
                 disableElevation
                 variant="contained"
