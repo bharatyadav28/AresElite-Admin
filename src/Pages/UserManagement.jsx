@@ -58,6 +58,7 @@ import Shipment from "../components/shipment/Shipment";
 import Transactions from "../components/Transactions";
 import { formatPhoneNumber } from "../utils/function";
 import Forms from "../components/Forms";
+import FormsData from "../components/FormsData";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -1082,7 +1083,7 @@ const UserManagement = () => {
               <Transactions user={activeView} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={3}>
-              <Forms />
+              <FormsData userId={activeView?._id} />
             </CustomTabPanel>
             {activeView?.role === "athlete" && (
               <CustomTabPanel value={value} index={4}>
