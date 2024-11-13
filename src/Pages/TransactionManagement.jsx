@@ -44,8 +44,70 @@ import { GetAllPlans } from "../Redux/ApiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import CheckIcon from "@mui/icons-material/Check";
 import axiosInstance from "../utils/axiosUtil";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
 
 import { formatDateToMMDDYYYY } from "../utils/function";
+
+const CustomDatePicker = ({
+  value,
+  onChange,
+  maxDate,
+  placeholder,
+  fullWidth = true,
+  error,
+  helperText,
+}) => {
+  // Convert YYYY-MM-DD to dayjs object
+  const parseBackendDate = (dateStr) => {
+    if (!dateStr) return null;
+    return dayjs(dateStr);
+  };
+
+  // Convert dayjs object to YYYY-MM-DD
+  const formatForBackend = (date) => {
+    if (!date) return "";
+    return date.format("YYYY-MM-DD");
+  };
+
+  const handleDateChange = (newDate) => {
+    // Convert to backend format before sending to parent
+    const backendFormattedDate = formatForBackend(newDate);
+    onChange(backendFormattedDate);
+  };
+
+  return (
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      style={{ marginTop: "0", paddingTop: "0" }}
+    >
+      <DatePicker
+        value={parseBackendDate(value)}
+        onChange={handleDateChange}
+        maxDate={parseBackendDate(maxDate)}
+        format="MM/DD/YYYY"
+        slotProps={{
+          textField: {
+            fullWidth,
+            placeholder,
+            error,
+            helperText,
+            // Remove calendar icon if needed
+            className: "remove-calender-icon",
+            // Remove border if needed
+            // sx: {
+            //   border: "none",
+            //   "& fieldset": { border: "none" },
+            // }
+          },
+        }}
+      />
+    </LocalizationProvider>
+  );
+};
 
 function Row(props) {
   const { row, token, shouldRefetch } = props;
@@ -59,6 +121,7 @@ function Row(props) {
 
   const handleStatusUpdate = async () => {
     setIsLoading(true);
+    console.log("booking id", row?.bookingId);
     try {
       const res = await axiosInstance.put(
         "/api/admin/transaction",
@@ -70,6 +133,8 @@ function Row(props) {
           params: {
             id: row._id,
             status,
+            service_type: row.service_type,
+            booking_id: row?.bookingId,
           },
         }
       );
@@ -279,6 +344,8 @@ export default function TransactionManagement({ user }) {
     searchQuery: "",
   });
 
+  console.log("Filter data: ", filterData);
+
   const handleGetTransactions = useCallback(async () => {
     setIsLoading(true);
 
@@ -468,36 +535,28 @@ export default function TransactionManagement({ user }) {
                     display: "flex",
                     alignItems: "center",
                     gap: "2%",
+                    width: "35rem",
                   }}
                 >
-                  <OutlinedInput
+                  <CustomDatePicker
                     value={filterData.from}
-                    onChange={(e) => {
-                      if (filterData.to === e.target.value) {
+                    onChange={(newDate) => {
+                      if (newDate === filterData.to) {
                         Swal.fire({
                           icon: "error",
                           title: "Oops...",
                           text: "Start and end date should not match",
                         });
                         return;
-                      } else {
-                        setFilterData({
-                          ...filterData,
-                          from: e.target.value,
-                        });
                       }
+                      setFilterData({
+                        ...filterData,
+                        from: newDate,
+                      });
                     }}
-                    fullWidth
-                    // sx={{
-                    //   border: "none",
-                    //   "& fieldset": { border: "none" },
-                    // }}
+                    maxDate={filterData.to}
                     placeholder="Select start date"
-                    type="date"
-                    className="remove-calender-icon"
-                    inputProps={{
-                      max: filterData.to,
-                    }}
+                    fullWidth
                   />
                   <Typography
                     variant="subtitle1"
@@ -507,34 +566,26 @@ export default function TransactionManagement({ user }) {
                   >
                     To
                   </Typography>
-                  <OutlinedInput
+
+                  <CustomDatePicker
                     value={filterData.to}
-                    onChange={(e) => {
-                      if (filterData.from === e.target.value) {
+                    onChange={(newDate) => {
+                      if (newDate === filterData.from) {
                         Swal.fire({
                           icon: "error",
                           title: "Oops...",
                           text: "Start and end date should not match",
                         });
                         return;
-                      } else {
-                        setFilterData({
-                          ...filterData,
-                          to: e.target.value,
-                        });
                       }
+                      setFilterData({
+                        ...filterData,
+                        to: newDate,
+                      });
                     }}
+                    minDate={filterData.from}
+                    placeholder="Select end date"
                     fullWidth
-                    // sx={{
-                    //   border: "none",
-                    //   "& fieldset": { border: "none" },
-                    // }}
-                    placeholder="Select start date"
-                    type="date"
-                    className="remove-calender-icon"
-                    inputProps={{
-                      min: filterData.from,
-                    }}
                   />
                 </Box>
               </Box>

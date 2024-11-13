@@ -281,6 +281,8 @@ const UserManagement = () => {
   //   })();
   // }, [handleGetAll, searchTerm]);
 
+  console.log("Active view:", activeView);
+
   return (
     <>
       <Typography
@@ -924,6 +926,16 @@ const UserManagement = () => {
                         sx={{ textTransform: "" }}
                       >
                         Email : {activeView?.email}
+                      </Typography>
+                    </Grid>
+
+                    <Grid xs={5}>
+                      <Typography
+                        variant="h5"
+                        color="initial"
+                        sx={{ textTransform: "" }}
+                      >
+                        Type : {activeView?.is_online ? "Online" : "In-Office"}
                       </Typography>
                     </Grid>
                   </Grid>
