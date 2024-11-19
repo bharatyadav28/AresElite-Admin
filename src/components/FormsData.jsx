@@ -45,7 +45,13 @@ function FormsData({ userId }) {
                 borderBottom: "2px solid #ccc",
               }}
             >
-              {formName}
+              {formName === "evalForm"
+                ? "Evaluation form"
+                : formName === "diagForm"
+                ? "Diagnosis form"
+                : formName === "PresForm"
+                ? "Prescription form"
+                : formName}
             </h3>
             {formContent.form.map((formItem, index) => (
               <div
