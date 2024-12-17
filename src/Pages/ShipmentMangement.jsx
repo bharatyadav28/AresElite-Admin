@@ -275,6 +275,9 @@ const ShipmentManagement = () => {
               <IconButton
                 aria-label="clear button"
                 // onClick={() => handleGetAll(1, "")}
+                onClick={() => {
+                  setSearch("");
+                }}
               >
                 <ClearIcon />
               </IconButton>

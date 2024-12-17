@@ -567,8 +567,13 @@ export const Login = async (dispatch, formdata) => {
   }
 };
 
-export const GetAllUsers = async (dispatch, page, searchQuery) => {
+export const GetAllUsers = async (dispatch, page, searchQuery, userType) => {
   dispatch(getStart());
+  let role = "athlete,doctor";
+  console.log("USer type", userType);
+  if (userType) {
+    role = userType;
+  }
   try {
     const { data } = await axiosInstance.get("/api/admin/get_all_users", {
       headers: {
@@ -577,6 +582,7 @@ export const GetAllUsers = async (dispatch, page, searchQuery) => {
       params: {
         page_no: page,
         searchQuery: searchQuery,
+        role: role,
       },
     });
     dispatch(getSuccess(data));
@@ -693,7 +699,7 @@ export const updateClinic = async (dispatch, id, formJson) => {
   }
 };
 
-export const ActivateUser = async (dispatch, id) => {
+export const ActivateUser = async (dispatch, id, currentPage) => {
   dispatch(activateStart());
   try {
     const { data } = await axiosInstance.get("/api/admin/make_active_user", {
@@ -704,6 +710,9 @@ export const ActivateUser = async (dispatch, id) => {
         id,
       },
     });
+    if (currentPage) {
+      data.currentPage = currentPage;
+    }
     dispatch(activateSuccess(data));
   } catch (error) {
     dispatch(activateFailure(error?.response?.data?.error));

@@ -69,6 +69,7 @@ const AddDoctorForm = () => {
       [setter === setStartTime ? "startTime" : "endTime"]: formattedTime,
     }));
   };
+  console.log("FormData", formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -297,7 +298,7 @@ const AddDoctorForm = () => {
                   />
                 </Grid>
 
-                <Grid
+                {/* <Grid
                   item
                   xs={3}
                   style={{
@@ -312,8 +313,8 @@ const AddDoctorForm = () => {
                     onChange={(time) => handleTimeChange(time, setStartTime)}
                     required
                   />
-                </Grid>
-                <Grid
+                </Grid> */}
+                {/* <Grid
                   item
                   xs={3}
                   style={{
@@ -328,7 +329,7 @@ const AddDoctorForm = () => {
                     onChange={(time) => handleTimeChange(time, setEndTime)}
                     required
                   />
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={7} style={{ marginTop: "1rem" }}>
                   <Typography variant="subTitle" color={"error"}>

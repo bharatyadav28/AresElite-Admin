@@ -281,7 +281,9 @@ function Row(props) {
                       disableUnderline
                       disabled={isServiceUpdating}
                     >
-                      <MenuItem value="completed">Completed</MenuItem>
+                      <MenuItem disabled={!isPaid} value="completed">
+                        Completed
+                      </MenuItem>
                       <MenuItem value="upcoming">Upcoming</MenuItem>
                       <MenuItem value="cancelled">Cancelled</MenuItem>
                     </Select>

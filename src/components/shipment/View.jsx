@@ -43,6 +43,7 @@ import dayjs from "dayjs";
 
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Label } from "@mui/icons-material";
 const SHIPMENT_STATUS = [
   { value: "order placed", label: "Order Placed" },
   { value: "order dispatched", label: "Order Dispatched" },
@@ -1011,6 +1012,7 @@ export default function Shipment() {
                       flexDirection: "column",
                       gap: "1rem",
                       minWidth: xs ? "90%" : sm ? "50%" : "20%",
+                      paddingTop: 0,
                     }}
                     onClose={() => setIsShipmentStatusOpen(false)}
                   >
@@ -1050,7 +1052,7 @@ export default function Shipment() {
                       </Typography>
                     </Box>
                     <Grid style={{ width: "100%" }}>
-                      <InputLabel
+                      <label
                         style={{
                           fontWeight: "bold",
                           marginBottom: "3%",
@@ -1059,7 +1061,7 @@ export default function Shipment() {
                         }}
                       >
                         Shipment Status
-                      </InputLabel>
+                      </label>
                       <FormControl
                         required
                         sx={{ m: 1, minWidth: 500 }}
@@ -1119,7 +1121,7 @@ export default function Shipment() {
                     </Grid>
 
                     <Grid style={{ width: "100%" }}>
-                      <InputLabel
+                      <label
                         style={{
                           fontWeight: "bold",
                           marginBottom: "3%",
@@ -1128,7 +1130,8 @@ export default function Shipment() {
                         }}
                       >
                         Tracking ID
-                      </InputLabel>
+                      </label>
+
                       <FormControl
                         required
                         sx={{ m: 1, minWidth: 500 }}
@@ -1170,7 +1173,7 @@ export default function Shipment() {
                     </Grid>
 
                     <Box>
-                      <InputLabel
+                      <label
                         style={{
                           fontWeight: "bold",
                           marginBottom: "2%",
@@ -1179,8 +1182,8 @@ export default function Shipment() {
                         }}
                       >
                         Date
-                      </InputLabel>
-                      <div style={{ width: "25rem" }}>
+                      </label>
+                      <div style={{ width: "37rem" }}>
                         <Typography
                           variant="caption"
                           sx={{

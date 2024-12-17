@@ -154,6 +154,7 @@ const UserManagement = () => {
 
   const { isFetching, users, error, msg, currentPage, totalPages } =
     useSelector((state) => state?.users);
+  console.log("Current page", currentPage);
 
   const { isFetching: loadingBooking, bookings } = useSelector(
     (state) => state?.booking
@@ -209,8 +210,9 @@ const UserManagement = () => {
     }
   };
   const handleActive = async (id) => {
-    setTimeout(() => {
-      ActivateUser(dispatch, id);
+    setTimeout(async () => {
+      await ActivateUser(dispatch, id, currentPage);
+      await handleGetAll(currentPage, search);
     }, 1000);
     setIdtoDel(null);
     handleCloseAlert();
@@ -255,14 +257,25 @@ const UserManagement = () => {
 
   const [visible, setVisible] = React.useState(false);
 
-  const handleGetAll = async (page, searchQuery) => {
+  const handleGetAll = async (page, searchQuery, userType = "") => {
     setSearch(searchQuery);
-    await GetAllUsers(dispatch, page, searchQuery);
+    await GetAllUsers(dispatch, page, searchQuery, userType);
   };
 
   const handleChange = (_, value) => {
     handleGetAll(value);
   };
+
+  React.useEffect(() => {
+    let userType = "";
+    if (filters.doctor) {
+      userType = "doctor";
+    }
+    if (filters.athlete) {
+      userType = userType + ",athlete";
+    }
+    handleGetAll(1, search, userType);
+  }, [filters]);
 
   React.useEffect(() => {
     handleGetAll(1);
@@ -477,7 +490,7 @@ const UserManagement = () => {
                     </Typography>
                   </Box>
                 </TableCell>
-                <TableCell
+                {/* <TableCell
                   style={{
                     justifyContent: "center",
                     alignItems: "center",
@@ -514,7 +527,7 @@ const UserManagement = () => {
                       End Time
                     </Typography>
                   </Box>
-                </TableCell>
+                </TableCell> */}
                 <TableCell
                   style={{
                     justifyContent: "center",
@@ -611,7 +624,7 @@ const UserManagement = () => {
                         >
                           {formatPhoneNumber(user.phone)}
                         </TableCell>
-                        <TableCell
+                        {/* <TableCell
                           style={{
                             justifyContent: "center",
                             alignItems: "center",
@@ -628,7 +641,7 @@ const UserManagement = () => {
                           }}
                         >
                           {formatTime(user.endTime) || "-"}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell
                           style={{
                             justifyContent: "center",
