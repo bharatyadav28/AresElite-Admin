@@ -1021,11 +1021,15 @@ export default function Shipment() {
                         display: "flex",
                         justifyContent: "end",
                         alignItems: "center",
-                        padding: "0.5rem",
+                        paddingTop: "0.5rem",
+                        // paddingBottom: "0",
                       }}
                     >
                       <IconButton
                         onClick={() => setIsShipmentStatusOpen(false)}
+                        sx={{
+                          padding: 0,
+                        }}
                       >
                         <CloseIcon />
                       </IconButton>
@@ -1103,13 +1107,14 @@ export default function Shipment() {
                             })
                           }
                         >
-                          {SHIPMENT_STATUS.map((sta) => (
+                          {SHIPMENT_STATUS.map((sta, index) => (
                             <MenuItem
                               key={sta}
                               disabled={
                                 sta.value ===
-                                data.status.find((s) => s.value === sta.value)
-                                  ?.value
+                                  data.status.find((s) => s.value === sta.value)
+                                    ?.value ||
+                                (data.status.length === 0 && index > 0)
                               }
                               value={sta.value}
                             >
