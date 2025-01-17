@@ -78,8 +78,8 @@ export default function Shipment() {
   const [newStatus, setNewStatus] = useState({
     label: "",
     value: "",
-    startDate: "",
-    endDate: "",
+    startDate: dayjs().toISOString(),
+    endDate: dayjs().toISOString(),
     trackingId: "",
   });
   const [isShipmentStatusOpen, setIsShipmentStatusOpen] = useState(false);
@@ -411,6 +411,9 @@ export default function Shipment() {
                     <CircularProgress
                       // color={theme?.palette?.primary?.light}
                       size={"0.8rem"}
+                      style={{
+                        color: "#fff",
+                      }}
                     />
                   )
                 }
@@ -432,6 +435,9 @@ export default function Shipment() {
                       <CircularProgress
                         // color={theme?.palette?.primary?.light}
                         size={"0.8rem"}
+                        style={{
+                          color: "#fff",
+                        }}
                       />
                     )
                   }

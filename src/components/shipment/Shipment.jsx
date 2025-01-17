@@ -18,6 +18,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useCallback, useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosUtil";
 import Swal from "sweetalert2";
+import dayjs from "dayjs";
 
 import CustomDialog from "../CustomDialog";
 
@@ -154,7 +155,9 @@ export default function ShipmentTable({ user }) {
                   <TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
                   <TableCell>{shipment.plan}</TableCell>
                   <TableCell>{shipment.phase}</TableCell>
-                  <TableCell>{date ? date : "---"}</TableCell>
+                  <TableCell>
+                    {date ? dayjs(date).format("MM/DD/YYYY") : "---"}
+                  </TableCell>
                   <TableCell>
                     <IconButton
                       onClick={() =>
